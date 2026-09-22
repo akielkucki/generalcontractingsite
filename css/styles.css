@@ -1,0 +1,1601 @@
+/* ==========================================================================
+   Red Bridge Construction
+   Palette, type and layout system
+   ========================================================================== */
+
+:root {
+  /* Brand palette */
+  --ink:       #14161A;   /* nav, hero, contact band, footer */
+  --slate:     #1E2126;   /* elevated dark surfaces */
+  --red:       #C2371F;   /* brand red, carried over from the current site */
+  --red-deep:  #9E2B17;
+  --red-light: #E4705A;   /* accent text on dark, where the brand red is too dim */
+  --paper:     #FFFFFF;
+  --bone:      #F7F5F2;   /* warm off white, the default section ground */
+  --sand:      #EFEAE3;   /* third tone, for inset wells and image mats */
+
+  --stone:     #5A5F68;   /* supporting text on light */
+  --mist:      #A8ADB5;   /* supporting text on dark */
+
+  /* Derived working tones */
+  --red-hover: #D24328;
+  --alert:     #B3341C;
+
+  --rule:        rgba(255, 255, 255, 0.12);   /* hairlines on dark */
+  --rule-strong: rgba(255, 255, 255, 0.22);
+  --line:        rgba(20, 22, 26, 0.13);      /* hairlines on light */
+  --line-strong: rgba(20, 22, 26, 0.26);
+
+  /* Layout */
+  --nav-h: 74px;
+  --container: 1240px;
+  --gutter: clamp(20px, 5vw, 48px);
+  --section-y: clamp(76px, 10vw, 136px);
+
+  --radius: 7px;
+  --radius-sm: 6px;
+
+  --shadow-card:  0 1px 2px rgba(20, 22, 26, 0.05), 0 12px 32px -18px rgba(20, 22, 26, 0.22);
+  --shadow-float: 0 20px 64px -24px rgba(0, 0, 0, 0.6);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* --------------------------------------------------------------- Reset -- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Manrope, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16.5px;
+  font-weight: 400;
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p, figure, dl, dd, ul, blockquote { margin: 0; }
+ul { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+button { font: inherit; color: inherit; }
+
+a { color: inherit; text-decoration: none; }
+
+[x-cloak] { display: none !important; }
+
+.anchor { display: block; height: 0; }
+
+/* ------------------------------------------------------------- Focus --- */
+
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+/* The brand red only reaches 3.3:1 against the ink ground, so dark surfaces
+   take the lighter tint for the focus ring. */
+.nav :focus-visible,
+.footer :focus-visible,
+.hero :focus-visible,
+.section--dark :focus-visible { outline-color: var(--red-light); }
+/* except inside the white form card, which is light again */
+.hero .card :focus-visible,
+.section--dark .card :focus-visible { outline-color: var(--red); }
+
+.skip-link {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 200;
+  padding: 12px 20px;
+  transform: translate(-50%, -160%);
+  background: var(--red);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.skip-link:focus-visible { transform: translate(-50%, 0); }
+
+/* Carries an accessible name for controls that are icon only on screen. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------- Primitives -- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+  scroll-margin-top: calc(var(--nav-h) + 8px);
+}
+
+.section--bone { background: var(--bone); }
+.section--dark { background: var(--ink); color: var(--paper); }
+
+.section__head { max-width: 780px; }
+
+/* Small uppercase label above a section title. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 20px;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 22px;
+  height: 3px;
+  background: currentColor;
+}
+.section--dark .eyebrow,
+.hero .eyebrow { color: var(--red-light); }
+
+.section__title {
+  font-size: clamp(29px, 4.1vw, 46px);
+  font-weight: 500;
+  line-height: 1.11;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.section__deck {
+  margin-top: 20px;
+  max-width: 62ch;
+  color: var(--stone);
+  font-size: clamp(16px, 1.4vw, 18px);
+  line-height: 1.7;
+}
+.section--dark .section__deck { color: var(--mist); }
+
+.link {
+  color: var(--red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(194, 55, 31, 0.42);
+  transition: text-decoration-color 0.2s var(--ease);
+}
+.link:hover { text-decoration-color: var(--red); }
+.section--dark .link {
+  color: var(--red-light);
+  text-decoration-color: rgba(228, 112, 90, 0.45);
+}
+.section--dark .link:hover { text-decoration-color: var(--red-light); }
+
+/* ------------------------------------------------------------ Buttons -- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 26px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.002em;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.22s var(--ease), border-color 0.22s var(--ease), color 0.22s var(--ease);
+}
+
+.btn--red { background: var(--red); color: #fff; }
+.btn--red:hover { background: var(--red-hover); }
+
+/* Ghost takes its edge from whichever ground it is standing on. */
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+.btn--ghost:hover {
+  border-color: var(--ink);
+  background: rgba(20, 22, 26, 0.035);
+}
+.section--dark .btn--ghost,
+.hero .btn--ghost {
+  color: var(--paper);
+  border-color: var(--rule-strong);
+}
+.section--dark .btn--ghost:hover,
+.hero .btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.44);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn--block { width: 100%; }
+
+/* ===========================================================  Wordmark  == */
+
+/* No logo artwork was supplied, so the mark is drawn inline: a red span over
+   two piers. Swap in assets/logo.svg here if the real artwork turns up. */
+.wordmark { display: inline-flex; align-items: center; gap: 11px; }
+
+.wordmark__mark { width: 30px; height: 30px; flex: none; color: var(--red); }
+
+.wordmark__text { display: flex; flex-direction: column; gap: 4px; }
+
+.wordmark__name {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1;
+}
+
+.wordmark__sub {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  color: var(--mist);
+}
+
+/* ==========================================================  Navigation == */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease);
+}
+.nav.is-scrolled { border-bottom-color: var(--rule); }
+
+.nav__inner {
+  position: relative;
+  z-index: 2; /* keeps the bar, and the close control, above the overlay */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: var(--nav-h);
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-left: auto;
+}
+
+.nav__links a {
+  position: relative;
+  padding: 6px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.004em;
+  color: var(--mist);
+  transition: color 0.2s var(--ease);
+}
+
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s var(--ease);
+}
+.nav__links a:hover,
+.nav__links a.is-current { color: var(--paper); }
+.nav__links a.is-current::after { transform: scaleX(1); }
+
+.nav__phone {
+  color: var(--paper);
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
+.nav__phone:hover { color: var(--red-light); }
+
+.nav__cta { min-height: 42px; padding: 0 20px; font-size: 14px; }
+
+/* Icon only in the corner. The accessible name rides along in a visually
+   hidden span so the control still announces. */
+.nav__toggle {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.nav__toggle-bars {
+  position: relative;
+  width: 24px;
+  height: 15px;
+}
+.nav__toggle-bars span {
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 1.5px;
+  background: var(--paper);
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+.nav__toggle-bars span:nth-child(1) { top: 2px; }
+.nav__toggle-bars span:nth-child(2) { top: 12px; }
+.nav__toggle-bars.is-open span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.nav__toggle-bars.is-open span:nth-child(2) { transform: translateY(-5px) rotate(-45deg); }
+
+/* ------------------------------------------------- Fullscreen menu ----- */
+
+/* Always in the DOM and driven by a class, so the open state lands correctly
+   even if the transition never gets a frame to run in. */
+.nav__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition:
+    clip-path 0.52s var(--ease),
+    opacity 0.3s var(--ease),
+    visibility 0s linear 0.52s;
+}
+.nav__overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  clip-path: inset(0 0 0 0);
+  transition:
+    clip-path 0.52s var(--ease),
+    opacity 0.24s var(--ease),
+    visibility 0s linear 0s;
+}
+
+/* Primary links sit up under the header, the secondary cluster and the full
+   width action are pushed to the bottom edge. */
+.nav__overlay-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: calc(var(--nav-h) + clamp(16px, 3.5vh, 30px)) var(--gutter) clamp(18px, 3.5vh, 28px);
+}
+
+.nav__overlay-links { display: flex; flex-direction: column; align-items: flex-start; }
+
+.nav__overlay-links a {
+  display: block;
+  padding: clamp(8px, 1.4vh, 14px) 0;
+  color: var(--paper);
+  font-size: clamp(32px, 9vw, 54px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.42s var(--ease), transform 0.52s var(--ease), color 0.2s var(--ease);
+}
+.nav__overlay-links a:hover,
+.nav__overlay-links a.is-current { color: var(--red-light); }
+
+.nav__overlay-foot {
+  margin-top: auto;
+  padding-top: clamp(28px, 7vh, 64px);
+}
+
+.nav__overlay-meta {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: clamp(14px, 3vh, 24px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.42s var(--ease), transform 0.52s var(--ease);
+}
+.nav__overlay-meta li {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--mist);
+}
+/* Phone, email and address are meant to be tapped, so each row carries a full
+   target rather than the 19px the text alone would give it. */
+.nav__overlay-meta a,
+.nav__overlay-meta span {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+.nav__overlay-meta a { transition: color 0.2s var(--ease); }
+.nav__overlay-meta a:hover { color: var(--paper); }
+
+.nav__overlay-cta {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.42s var(--ease), transform 0.52s var(--ease);
+}
+
+/* Links settle in after the panel has wiped open. */
+.nav__overlay.is-open .nav__overlay-links a,
+.nav__overlay.is-open .nav__overlay-meta,
+.nav__overlay.is-open .nav__overlay-cta {
+  opacity: 1;
+  transform: none;
+}
+.nav__overlay.is-open .nav__overlay-links a:nth-child(1) { transition-delay: 0.17s; }
+.nav__overlay.is-open .nav__overlay-links a:nth-child(2) { transition-delay: 0.23s; }
+.nav__overlay.is-open .nav__overlay-links a:nth-child(3) { transition-delay: 0.29s; }
+.nav__overlay.is-open .nav__overlay-links a:nth-child(4) { transition-delay: 0.35s; }
+.nav__overlay.is-open .nav__overlay-meta { transition-delay: 0.41s; }
+.nav__overlay.is-open .nav__overlay-cta { transition-delay: 0.47s; }
+
+/* The page behind the overlay must not scroll while it is open. Scoped to the
+   widths that actually have a menu, so a stale lock cannot freeze the desktop
+   page. Paired with the guard below, a menu left open across a resize cannot
+   strand anyone: the close control is hidden above 900px, so the overlay is
+   forced shut there in CSS rather than trusting a resize event to arrive. */
+@media (max-width: 900px) {
+  html.menu-open,
+  html.menu-open body { overflow: hidden; }
+
+  /* That lock stops the root scrolling, which also stops the sticky header
+     sticking: it would drop back to its static position at the top of the
+     document and take the close control off screen with it whenever the menu
+     was opened part way down the page. Pinning it explicitly keeps the close
+     control in view, and the matching padding replaces the space the header
+     gives up so the page underneath neither shifts nor changes height. */
+  html.menu-open .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  html.menu-open body { padding-top: var(--nav-h); }
+}
+
+@media (min-width: 901px) {
+  .nav__overlay { display: none; }
+}
+
+/* ===============================================================  Hero  == */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100svh - var(--nav-h));
+  background: var(--ink);
+  color: var(--paper);
+
+  /* The review badge sits above the headline, so on mobile it falls inside the
+     red band and the band has to be told how tall it is. Its box is pinned
+     rather than left to line-height, so the band maths below stays exact. */
+  --badge-h: 24px;
+  --badge-gap: clamp(14px, 1.6vw, 20px);
+}
+
+/* Copy on the left, the white request card on the right. */
+.hero__grid {
+  flex: 1 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  gap: clamp(40px, 6vw, 84px);
+  align-content: center;
+  padding-top: clamp(26px, 3.5vh, 54px);
+  padding-bottom: clamp(20px, 2.5vh, 40px);
+}
+
+.hero__copy { align-self: center; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+
+/* ------------------------------------------------------- Review badge -- */
+
+/* The stars are five separate elements rather than one growing string. A
+   keyframed `content` cannot do this: `content` only applies to ::before and
+   ::after, not to the element itself, and even on a pseudo-element it is a
+   discrete property with patchy support, so it would jump rather than stagger
+   and would not hold in Safari at all. Five elements also let each star carry
+   its own scale and overshoot, which reads as stars landing rather than text
+   being typed.
+
+   The whole cluster is aria-hidden; the rating is announced by the text
+   beside it. */
+/* Sits above the headline as a kicker. No margin-top: it is the first thing in
+   the copy column, so the hero's own padding sets the space above it, and any
+   margin here would push the headline down and open a gap under the nav that
+   the red band could not reach. `align-self` keeps it shrink to fit inside the
+   flex column rather than stretching, so it can be centred on mobile. */
+.review-badge {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: var(--badge-h);
+  margin: 0 0 var(--badge-gap);
+  color: var(--paper);
+  font-size: clamp(13px, 1.3vw, 15px);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.review-stars {
+  display: inline-flex;
+  gap: 2px;
+  color: #ffdc41;
+  font-size: 1.12em;
+  line-height: 1;
+}
+
+/* transform-box keeps the overshoot scaling about the glyph's own centre. */
+.review-star {
+  display: block;
+  transform-origin: 50% 60%;
+}
+
+/* Sized so each masked line stays a single line at every width. */
+.hero__title {
+  font-size: clamp(38px, 5.2vw, 64px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.032em;
+}
+
+.line-mask { display: block; padding-bottom: 0.04em; }
+.line { display: block; }
+.dot { color: var(--red-light); }
+
+/* Held to 42ch so the supporting line stops inside the heavy part of the hero
+   scrim rather than running out into the band where the photograph opens up. */
+.hero__deck {
+  margin-top: clamp(22px, 2.8vw, 32px);
+  max-width: 42ch;
+  color: var(--mist);
+  font-size: clamp(16px, 1.45vw, 18.5px);
+  line-height: 1.72;
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(22px, 2.6vw, 30px);
+}
+
+/* One primary action per breakpoint: the phone has no hero card so it offers
+   the estimate, the desktop has the card right there so it offers the call. */
+.hero__cta--estimate { display: none; }
+
+/* --------------------------------------------------------- Hero facts -- */
+
+.hero__facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(28px, 3.4vw, 42px);
+  padding-top: clamp(22px, 2.6vw, 30px);
+  border-top: 1px solid var(--rule);
+}
+.hero__facts div { min-width: 0; }
+/* A shade lighter than --mist: this strip runs the full width of the copy
+   column, out to where the scrim has already started to release. */
+.hero__facts dt {
+  color: #C4C9D0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.hero__facts dd {
+  margin: 9px 0 0;
+  font-size: clamp(13px, 1.15vw, 14.5px);
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+/* ------------------------------------------------------- Hero marquee -- */
+
+.hero__marquee {
+  flex: none;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(13px, 1.5vw, 19px);
+}
+
+.hero__marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hero-marquee 52s linear infinite;
+}
+
+.hero__marquee-group {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: clamp(26px, 3vw, 46px);
+  padding-right: clamp(26px, 3vw, 46px);
+}
+
+.hero__marquee-group span {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(26px, 3vw, 46px);
+  color: var(--mist);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.hero__marquee-group span::after {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  background: var(--red);
+  transform: rotate(45deg);
+}
+
+/* Two identical groups, so shifting by half the track loops seamlessly. */
+@keyframes hero-marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ---------------------------------------------------- Hero photograph -- */
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  margin: 0;
+}
+/* Biased so the crop holds the building and its lit windows rather than the
+   driveway in the foreground. The photograph is a dusk shot and reads very
+   dark once it is scaled down, so it is lifted slightly before the scrim goes
+   over it. */
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  filter: brightness(1.1) saturate(1.04);
+}
+
+/* Legibility scrim, weighted to the text side.
+
+   Everything that carries text sits left of about 48 percent of the viewport:
+   the supporting line stops near 37, and the facts strip, the widest element
+   in the column, ends around 46. The band holds 0.80 or more across all of
+   that and only then drops away, through the gap before the white card and
+   out to the margin beyond it, which is where the photograph is actually
+   allowed to read.
+
+   Measured against a blown out highlight, the worst case any of the stops can
+   produce: 5.7:1 for the supporting line and 6.0:1 for the facts labels, both
+   clear of the 4.5:1 AA threshold. The top and bottom fades let the hero meet
+   the nav and the next section cleanly.
+
+   If the photograph is ever swapped, re-check those numbers. A daylight
+   picture under the text column will need the left stops raised. */
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(103deg,
+      rgba(20, 22, 26, 0.90) 0%,
+      rgba(20, 22, 26, 0.80) 48%,
+      rgba(20, 22, 26, 0.44) 60%,
+      rgba(20, 22, 26, 0.18) 74%,
+      rgba(20, 22, 26, 0.04) 100%),
+    linear-gradient(to bottom,
+      rgba(20, 22, 26, 0.80) 0%,
+      rgba(20, 22, 26, 0) 20%,
+      rgba(20, 22, 26, 0) 60%,
+      rgba(20, 22, 26, 0.88) 100%);
+}
+
+/* ===========================================================  Services  == */
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.2vw, 30px);
+  margin-top: clamp(44px, 5.5vw, 72px);
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.service:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 2px rgba(20, 22, 26, 0.06), 0 22px 44px -22px rgba(20, 22, 26, 0.3);
+}
+
+.service__figure { position: relative; margin: 0; overflow: hidden; }
+.service__figure img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+.service:hover .service__figure img { transform: scale(1.04); }
+
+.service__index {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 34px;
+  padding-inline: 12px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.service__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: clamp(22px, 2.4vw, 30px);
+}
+
+.service__title {
+  font-size: clamp(19px, 1.9vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  line-height: 1.25;
+}
+
+.service__text {
+  margin-top: 12px;
+  color: var(--stone);
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.service__list {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.service__list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.service__list li + li { margin-top: 11px; }
+.service__list li::before {
+  content: "";
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  transform: rotate(45deg);
+}
+
+.services__foot {
+  margin-top: clamp(32px, 4vw, 48px);
+  color: var(--stone);
+  font-size: 15.5px;
+}
+
+/* ===========================================================  Projects  == */
+
+.projects__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 48px;
+}
+.projects__head .section__head { max-width: 640px; }
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 26px);
+  margin-top: clamp(44px, 5.5vw, 68px);
+}
+
+/* The first tile spans two columns and two rows, so the grid opens on the
+   strongest photograph instead of six equal squares. */
+.project--wide { grid-column: span 2; grid-row: span 2; }
+
+.project {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--radius);
+  background: var(--sand);
+}
+.project img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease);
+}
+.project--wide img { aspect-ratio: 8 / 7; }
+.project:hover img { transform: scale(1.045); }
+
+.project figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: clamp(40px, 6vw, 60px) clamp(18px, 2vw, 26px) clamp(16px, 1.8vw, 22px);
+  background: linear-gradient(to top,
+    rgba(20, 22, 26, 0.92) 0%,
+    rgba(20, 22, 26, 0.74) 42%,
+    rgba(20, 22, 26, 0) 100%);
+  color: var(--paper);
+}
+
+.project__name {
+  font-size: clamp(16px, 1.6vw, 19px);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+}
+.project--wide .project__name { font-size: clamp(20px, 2.2vw, 26px); }
+
+.project__meta {
+  margin-top: 7px;
+  color: var(--red-light);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.projects__note {
+  margin-top: clamp(28px, 3.4vw, 40px);
+  max-width: 70ch;
+  color: var(--stone);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ==============================================================  Story  == */
+
+.story__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  gap: clamp(32px, 5vw, 76px);
+  align-items: start;
+  margin-top: clamp(44px, 5.5vw, 68px);
+}
+
+.story__figure { margin: 0; }
+.story__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+.story__figure figcaption {
+  margin-top: 14px;
+  color: var(--stone);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.story__copy p {
+  max-width: 58ch;
+  color: var(--stone);
+  font-size: 16.5px;
+  line-height: 1.75;
+}
+.story__copy p + p { margin-top: 20px; }
+.story__copy p.story__lead {
+  color: var(--ink);
+  font-size: clamp(18px, 1.8vw, 21px);
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  margin-top: clamp(32px, 3.6vw, 44px);
+  padding-top: clamp(26px, 3vw, 34px);
+  border-top: 1px solid var(--line);
+}
+.stats > div { min-width: 0; }
+.stats dt {
+  font-size: clamp(26px, 3.2vw, 38px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--red);
+}
+.stats dd {
+  margin: 10px 0 0;
+  color: var(--stone);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.points {
+  margin-top: clamp(30px, 3.4vw, 40px);
+  border-top: 1px solid var(--line);
+}
+.points li {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.points li span {
+  color: var(--red);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+.points li p { color: var(--ink); font-size: 15.5px; line-height: 1.65; }
+
+/* =======================================================  Testimonials  == */
+
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 32px);
+  margin-top: clamp(44px, 5.5vw, 68px);
+}
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 2.8vw, 34px);
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.quote__stars { display: inline-flex; gap: 3px; color: var(--red); margin-bottom: 18px; }
+.quote__stars svg { display: block; fill: currentColor; }
+
+.quote__body {
+  flex: 1;
+  color: var(--ink);
+  font-size: clamp(15.5px, 1.5vw, 17px);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.quote__by {
+  display: block;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--stone);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  font-style: normal;
+}
+
+/* ================================================================  FAQ  == */
+
+.faq__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(36px, 6vw, 88px);
+  align-items: start;
+}
+
+.faq__head { position: sticky; top: calc(var(--nav-h) + 40px); }
+.faq__cta { margin-top: 32px; }
+
+.faq__list { border-top: 1px solid var(--line); }
+.faq__item { border-bottom: 1px solid var(--line); }
+
+.faq__q { margin: 0; font-size: inherit; font-weight: inherit; }
+
+.faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  min-height: 68px;
+  padding: 20px 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.22s var(--ease);
+}
+.faq__trigger:hover { color: var(--red); }
+
+.faq__label {
+  font-size: clamp(16.5px, 1.6vw, 19px);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.4;
+}
+
+.faq__icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.faq__icon::before,
+.faq__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14px;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: var(--red);
+  transition: transform 0.32s var(--ease);
+}
+.faq__icon::after { transform: rotate(90deg); }
+.faq__item.is-open .faq__icon::after { transform: rotate(0deg); }
+
+.faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.34s var(--ease);
+}
+.faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
+
+.faq__answer {
+  min-height: 0; /* lets the 0fr row actually collapse */
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s linear 0.34s;
+}
+.faq__item.is-open .faq__answer {
+  visibility: visible;
+  transition-delay: 0s;
+}
+.faq__answer p {
+  max-width: 62ch;
+  padding-bottom: 26px;
+  color: var(--stone);
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+/* ============================================================  Contact  == */
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(36px, 5.5vw, 84px);
+  align-items: start;
+}
+
+.contact__copy { position: sticky; top: calc(var(--nav-h) + 40px); }
+
+.details {
+  margin-top: clamp(32px, 4vw, 48px);
+  border-top: 1px solid var(--rule);
+}
+.details > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.details dt {
+  color: var(--mist);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.85;
+}
+.details dd { margin: 0; font-size: 15.5px; }
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.badges li {
+  padding: 7px 13px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  color: var(--mist);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+/* ==============================================================  Cards  == */
+
+/* One white card style, used for the hero request panel and the contact form.
+   It floats over the hero photograph and sits on the ink band at the foot. */
+.card {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-float);
+  padding: clamp(22px, 2.4vw, 32px);
+}
+.card--lg { padding: clamp(26px, 3vw, 44px); }
+
+/* Tighter rhythm in the hero so the whole thing, marquee included, fits a
+   900px tall window. Control sizes are untouched, only the spacing. */
+.hero .card .form__head { margin-bottom: 16px; }
+.hero .card .field { margin-bottom: 12px; }
+.hero .card .field textarea { min-height: 70px; }
+.hero .card .form__foot { margin-top: 10px; }
+
+/* ==============================================================  Forms  == */
+
+.form__head { margin-bottom: 26px; }
+
+.form__title {
+  font-size: clamp(20px, 2vw, 25px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.form__note {
+  margin-top: 8px;
+  color: var(--stone);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form__alert {
+  margin-bottom: 20px;
+  padding: 13px 15px;
+  border: 1px solid rgba(179, 52, 28, 0.35);
+  border-left: 3px solid var(--alert);
+  border-radius: var(--radius-sm);
+  background: rgba(179, 52, 28, 0.06);
+  color: var(--alert);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.field { margin-bottom: 18px; }
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.field input,
+.field textarea,
+.select select {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 14px;
+  background: var(--bone);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15.5px;
+  line-height: 1.5;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.field textarea { resize: vertical; min-height: 92px; }
+
+/* Light enough to read as a hint, dark enough to clear AA on the bone well. */
+.field input::placeholder,
+.field textarea::placeholder { color: #767B83; }
+
+.field input:hover,
+.field textarea:hover,
+.select select:hover { border-color: var(--ink); }
+
+.field input:focus,
+.field textarea:focus,
+.select select:focus { background: var(--paper); }
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"],
+.select select[aria-invalid="true"] { border-color: var(--alert); }
+
+.select { position: relative; }
+.select select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%235A5F68' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  cursor: pointer;
+}
+
+.field__hint {
+  margin-top: 7px;
+  color: var(--stone);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.field__error {
+  margin-top: 7px;
+  color: var(--alert);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.form .btn--block { margin-top: 8px; }
+
+.form__foot {
+  margin-top: 14px;
+  color: var(--stone);
+  font-size: 12.5px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+/* Post submit confirmation */
+
+.sent { padding: 4px 0; }
+.sent__title {
+  font-size: clamp(20px, 2vw, 25px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.sent__body {
+  margin-top: 12px;
+  color: var(--stone);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.sent__recap {
+  margin: 26px 0;
+  border-top: 1px solid var(--line);
+}
+.sent__recap > div {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+.sent__recap dt {
+  color: var(--stone);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+.sent__recap dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+
+/* =============================================================  Footer  == */
+
+.footer {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 1px solid var(--rule);
+  padding-top: clamp(40px, 5vw, 64px);
+  padding-bottom: clamp(32px, 4vw, 48px);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+}
+
+.footer__links { display: flex; flex-wrap: wrap; gap: 12px 30px; }
+.footer__links a {
+  color: var(--mist);
+  font-size: 14.5px;
+  transition: color 0.2s var(--ease);
+}
+.footer__links a:hover { color: var(--paper); }
+
+.footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin-top: clamp(32px, 4vw, 48px);
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+}
+.footer__base p {
+  max-width: 78ch;
+  color: var(--mist);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* ==========================================================  Responsive == */
+
+@media (max-width: 1080px) {
+  .nav__links { gap: 24px; }
+  .nav__phone { display: none; }
+  .faq__grid,
+  .contact__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+  .services__grid { gap: 18px; }
+}
+
+@media (max-width: 980px) {
+  .services__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Odd card out goes full width rather than leaving a half empty row. */
+  .service:last-child:nth-child(odd) { grid-column: span 2; }
+  .service:last-child:nth-child(odd) .service__figure img { aspect-ratio: 21 / 9; }
+}
+
+@media (max-width: 900px) {
+  :root { --nav-h: 64px; }
+
+  .nav__links,
+  .nav__cta { display: none; }
+  .nav__toggle { display: inline-flex; }
+
+  /* Stacked hero: headline, supporting line, one action, the facts strip.
+     Holding all of that plus a four field card in a single column is what
+     made it congested, so the card is dropped here and the action carries
+     people to the one at the foot of the page. */
+  .hero {
+    --hero-pad-top: clamp(52px, 12vh, 104px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-bottom: 0;
+  }
+
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-content: start;
+    text-align: center;
+    padding-top: var(--hero-pad-top);
+    padding-bottom: clamp(28px, 5vh, 44px);
+  }
+
+  .hero__copy { align-self: start; }
+  .hero__ctas { justify-content: center; margin-top: clamp(24px, 4vh, 34px); }
+  .hero__marquee { display: none; }
+
+  .hero__cta--call { display: none; }
+  .hero__cta--estimate { display: inline-flex; }
+  .hero__cta--browse { display: none; }
+
+  /* One request form on the page, at the foot. */
+  .hero .card { display: none; }
+
+  .hero__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; text-align: left; }
+
+  .hero__title {
+    position: relative;
+    max-width: none;
+    margin-inline: auto;
+    font-size: clamp(38px, 10.5vw, 60px);
+  }
+
+  /* Red band running from the top of the hero to the midpoint of the headline.
+     Its height is the space above the title plus exactly one line box, so the
+     edge lands between the first and second lines at any type scale, and stays
+     correct even where a line has to wrap. The 1.09em is the 1.05 line height
+     plus the 0.04em the mask adds below it. */
+  /* The band is anchored to the title, so it has to reach back up over the
+     review badge as well as the hero padding, or it starts below the badge and
+     leaves a strip of ink between the nav and the red. Both offsets carry the
+     same badge block, so the top edge lands exactly on the top of the hero. */
+  .hero__title::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(-1 * (var(--hero-pad-top) + var(--badge-h) + var(--badge-gap)));
+    z-index: -1;
+    width: 100vw;
+    height: calc(var(--hero-pad-top) + var(--badge-h) + var(--badge-gap) + 1.09em);
+    transform: translateX(-50%);
+    background: var(--red);
+  }
+
+  /* Centred with the copy it sits above, and on the red rather than the photo,
+     so the label takes the same white as the first headline line. */
+  .review-badge {
+    align-self: center;
+    color: #fff;
+  }
+
+  /* First line sits on the red. White holds 5.4:1 there. */
+  .hero__title .line-mask:first-child .line { color: #fff; }
+  .hero__title .line-mask:first-child .dot { color: #fff; }
+
+  .hero__deck { max-width: none; margin-inline: auto; }
+
+  /* The picture carries straight on from the red band as the hero background,
+     so there is no dark gap between the two. The band sits a layer above it
+     and the copy runs over the top of both. */
+  .hero__media { z-index: -2; }
+  .hero__img { object-position: center 45%; }
+
+  /* Copy is over the picture again below the band, so the scrim comes back.
+     It holds through the text and releases toward the foot of the hero. */
+  .hero__media::after {
+    background: linear-gradient(to bottom,
+      rgba(20, 22, 26, 0.84) 0%,
+      rgba(20, 22, 26, 0.84) 44%,
+      rgba(20, 22, 26, 0.56) 66%,
+      rgba(20, 22, 26, 0.3) 100%);
+  }
+
+  .projects__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project--wide { grid-column: span 2; grid-row: auto; }
+  .project--wide img { aspect-ratio: 16 / 9; }
+
+  .quotes { grid-template-columns: minmax(0, 1fr); }
+
+  .story__grid,
+  .faq__grid,
+  .contact__grid { grid-template-columns: minmax(0, 1fr); }
+
+  .story__figure img { aspect-ratio: 3 / 2; }
+
+  .faq__head,
+  .contact__copy { position: static; }
+}
+
+@media (max-width: 700px) {
+  .services__grid { grid-template-columns: minmax(0, 1fr); }
+  .service:last-child:nth-child(odd) { grid-column: auto; }
+  .service:last-child:nth-child(odd) .service__figure img { aspect-ratio: 16 / 10; }
+
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+
+  .projects__grid { grid-template-columns: minmax(0, 1fr); }
+  .project--wide { grid-column: auto; }
+  .project--wide img,
+  .project img { aspect-ratio: 4 / 3; }
+
+  .points li,
+  .details > div,
+  .sent__recap > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .points li span,
+  .details dt,
+  .sent__recap dt { line-height: 1.6; }
+
+  .footer__inner { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 380px) {
+  .wordmark__sub { display: none; }
+  .hero__ctas .btn { width: 100%; }
+}
+
+/* Four facts stacked one per row costs about 140px of a 748px hero, so they
+   stay two up until the columns are genuinely too narrow to hold a label. */
+@media (max-width: 360px) {
+  .hero__facts { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ======================================================  Motion states  == */
+
+/* Hero elements wait for the GSAP entrance. The .anim-ready class is added by
+   main.js once it has taken over, or by the inline fallback timer. */
+.js:not(.reduce-motion):not(.anim-ready) .hero__title .line {
+  transform: translateY(102%);
+}
+.js:not(.reduce-motion):not(.anim-ready) .hero__deck,
+.js:not(.reduce-motion):not(.anim-ready) .review-badge,
+.js:not(.reduce-motion):not(.anim-ready) .hero__ctas,
+.js:not(.reduce-motion):not(.anim-ready) .hero__facts,
+.js:not(.reduce-motion):not(.anim-ready) .hero .card,
+.js:not(.reduce-motion):not(.anim-ready) .hero__media {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .faq__answer { transition: none !important; }
+  .hero__marquee-track { animation: none !important; }
+
+  .nav__overlay,
+  .nav__overlay-links a,
+  .nav__overlay-meta,
+  .nav__overlay-cta { transition: none !important; }
+  .nav__overlay.is-open .nav__overlay-links a,
+  .nav__overlay.is-open .nav__overlay-meta,
+  .nav__overlay.is-open .nav__overlay-cta { transition-delay: 0s !important; }
+}

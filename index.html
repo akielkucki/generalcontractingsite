@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Red Bridge Construction | Remodeling, Custom Homes and Restoration in Bucks County, PA</title>
+<meta name="description" content="Red Bridge Construction has built, remodeled and restored homes across New Hope and Bucks County since 1997. Kitchens, additions, custom homes and historic restoration. Licensed and insured in PA.">
+<meta name="theme-color" content="#14161A">
+<link rel="canonical" href="https://www.redbridgeconstructionllc.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Red Bridge Construction">
+<meta property="og:title" content="Red Bridge Construction LLC">
+<meta property="og:description" content="Remodeling, custom homes and historic restoration across New Hope and Bucks County since 1997.">
+<meta property="og:url" content="https://www.redbridgeconstructionllc.com/">
+<meta property="og:locale" content="en_US">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.redbridgeconstructionllc.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+
+<script>
+  /* Runs before paint so the hero can start hidden without a flash of unstyled content. */
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('reduce-motion');
+    }
+    /* Safety net: if GSAP never loads, reveal everything anyway. */
+    window.setTimeout(function () { root.classList.add('anim-ready'); }, 2600);
+  })();
+</script>
+
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="js/main.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  "name": "Red Bridge Construction LLC",
+  "url": "https://www.redbridgeconstructionllc.com/",
+  "telephone": "+1-215-534-1008",
+  "email": "redbridgeconstructionllc@gmail.com",
+  "foundingDate": "1997",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "231 Red Bridge Rd",
+    "addressLocality": "Kintnersville",
+    "addressRegion": "PA",
+    "postalCode": "18930",
+    "addressCountry": "US"
+  },
+  "areaServed": ["New Hope, PA", "Doylestown, PA", "Kintnersville, PA", "Bucks County, PA"],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  }
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============================ NAVIGATION ============================ -->
+<header class="nav" x-data="siteNav()" @keydown.escape.window="close()" @keydown.tab="trap($event)">
+  <div class="nav__inner">
+    <a class="wordmark" href="#top" aria-label="Red Bridge Construction, back to top">
+      <svg class="wordmark__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+        <path d="M2 11.5h28" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M4 28V11.5M28 28V11.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M4 28c0-7.2 5.4-11 12-11s12 3.8 12 11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span class="wordmark__text">
+        <span class="wordmark__name">RED BRIDGE</span>
+        <span class="wordmark__sub">CONSTRUCTION LLC</span>
+      </span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services" data-nav-link>Services</a>
+      <a href="#projects" data-nav-link>Projects</a>
+      <a href="#about" data-nav-link>About</a>
+      <a href="#faq" data-nav-link>FAQ</a>
+      <a href="#contact" data-nav-link>Contact</a>
+    </nav>
+
+    <a class="nav__phone" href="tel:+12155341008">(215) 534-1008</a>
+    <a class="btn btn--red nav__cta" href="#contact" data-estimate-link>Start a project</a>
+
+    <button type="button" class="nav__toggle" x-ref="toggle" aria-controls="site-menu"
+            :aria-expanded="open ? 'true' : 'false'" @click="toggle()">
+      <span class="nav__toggle-bars" :class="{ 'is-open': open }" aria-hidden="true">
+        <span></span><span></span>
+      </span>
+      <span class="sr-only" x-text="open ? 'Close menu' : 'Open menu'">Open menu</span>
+    </button>
+  </div>
+
+  <div class="nav__overlay" id="site-menu" x-ref="panel" :class="{ 'is-open': open }"
+       @click.self="close(false)">
+    <div class="nav__overlay-inner">
+      <nav class="nav__overlay-links" aria-label="Primary, mobile">
+        <a href="#services" data-nav-link @click="close(false)">Services</a>
+        <a href="#projects" data-nav-link @click="close(false)">Projects</a>
+        <a href="#about" data-nav-link @click="close(false)">About</a>
+        <a href="#contact" data-nav-link @click="close(false)">Contact</a>
+      </nav>
+
+      <div class="nav__overlay-foot">
+        <ul class="nav__overlay-meta">
+          <li><a href="tel:+12155341008">(215) 534-1008</a></li>
+          <li><a href="mailto:redbridgeconstructionllc@gmail.com">redbridgeconstructionllc@gmail.com</a></li>
+          <li><span>Monday to Friday, 8:00 to 5:00</span></li>
+        </ul>
+
+        <a class="btn btn--red nav__overlay-cta" href="#contact" data-estimate-link @click="close(false)">Start a project</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<span id="top" class="anchor" aria-hidden="true"></span>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" aria-labelledby="hero-title">
+
+  <figure class="hero__media">
+    <img class="hero__img"
+         src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=1920&amp;q=75"
+         srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=828&amp;q=75 828w,
+                 https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=1200&amp;q=75 1200w,
+                 https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=1920&amp;q=75 1920w,
+                 https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=2048&amp;q=75 2048w"
+         sizes="100vw" width="1920" height="1440" fetchpriority="high" decoding="async"
+         alt="A detached garage built by Red Bridge Construction, photographed at dusk with its windows lit from inside and a cupola on the ridge.">
+  </figure>
+
+  <div class="hero__grid container">
+
+    <div class="hero__copy">
+      <p class="review-badge">
+        <span class="review-stars" aria-hidden="true"
+        ><span class="review-star">&#9733;</span><span class="review-star">&#9733;</span><span class="review-star">&#9733;</span><span class="review-star">&#9733;</span><span class="review-star">&#9733;</span></span>
+        <span>Rated 5.0 on Google</span>
+      </p>
+      <h1 class="hero__title" id="hero-title">
+        <span class="line-mask"><span class="line">Building Bucks</span></span>
+        <span class="line-mask"><span class="line">County since 1997<span class="dot">.</span></span></span>
+      </h1>
+
+      <p class="hero__deck">
+        Remodels, custom homes and historic restorations across New Hope and Bucks County. A small
+        Kintnersville team, treating craft and schedule as the same promise for 28 years.
+      </p>
+
+  
+
+      <div class="hero__ctas">
+        <a class="btn btn--red hero__cta--estimate" href="#contact" data-estimate-link>Start your project</a>
+        <a class="btn btn--red hero__cta--call" href="tel:+12155341008">Call (215) 534-1008</a>
+        <a class="btn btn--ghost hero__cta--browse" href="#projects">See the work</a>
+      </div>
+
+    </div>
+
+    <div class="card" x-data="projectForm('hero')">
+      <form class="form" id="hero-project-form" novalidate @submit.prevent="submit()" x-show="!sent">
+        <div class="form__head">
+          <h2 class="form__title">Tell us what you are building</h2>
+          <p class="form__note">Takes about a minute. A real conversation about your project, answered within one business day.</p>
+        </div>
+
+        <div class="form__alert" role="alert" x-show="summary" x-cloak x-text="summary"></div>
+
+        <div class="field">
+          <label for="hero-name">Full name</label>
+          <input type="text" id="hero-name" name="name" autocomplete="name"
+                 x-model="fields.name" @blur="touch('name')"
+                 :aria-invalid="errors.name ? 'true' : 'false'"
+                 :aria-describedby="errors.name ? 'hero-name-error' : false">
+          <p class="field__error" id="hero-name-error" x-show="errors.name" x-cloak x-text="errors.name"></p>
+        </div>
+
+        <div class="field">
+          <label for="hero-contact">Email or phone</label>
+          <input type="text" id="hero-contact" name="contact" autocomplete="email"
+                 x-model="fields.contact" @blur="touch('contact')"
+                 :aria-invalid="errors.contact ? 'true' : 'false'"
+                 :aria-describedby="errors.contact ? 'hero-contact-error' : false">
+          <p class="field__error" id="hero-contact-error" x-show="errors.contact" x-cloak x-text="errors.contact"></p>
+        </div>
+
+        <div class="field">
+          <label for="hero-service">What are you building?</label>
+          <div class="select">
+            <select id="hero-service" name="service" x-model="fields.service" @change="touch('service')"
+                    :aria-invalid="errors.service ? 'true' : 'false'"
+                    :aria-describedby="errors.service ? 'hero-service-error' : false">
+              <option value="">Pick the closest fit</option>
+              <option value="Kitchen or bathroom remodel">Kitchen or bathroom remodel</option>
+              <option value="Addition or whole-house renovation">Addition or whole-house renovation</option>
+              <option value="New custom home">New custom home</option>
+              <option value="Historic or property restoration">Historic or property restoration</option>
+              <option value="Something else">Something else</option>
+            </select>
+          </div>
+          <p class="field__error" id="hero-service-error" x-show="errors.service" x-cloak x-text="errors.service"></p>
+        </div>
+
+        <div class="field">
+          <label for="hero-details">Short description</label>
+          <textarea id="hero-details" name="details" rows="3"
+                    placeholder="Where the property is, what you have in mind, and any timeline."
+                    x-model="fields.details" @blur="touch('details')"
+                    :aria-invalid="errors.details ? 'true' : 'false'"
+                    :aria-describedby="errors.details ? 'hero-details-error' : false"></textarea>
+          <p class="field__error" id="hero-details-error" x-show="errors.details" x-cloak x-text="errors.details"></p>
+        </div>
+
+        <button type="submit" class="btn btn--red btn--block" :disabled="busy"
+                x-text="busy ? 'Sending...' : 'Send request'">Send request</button>
+        <p class="form__foot" x-text="footNote"></p>
+      </form>
+
+      <div class="sent" role="status" x-show="sent" x-cloak x-ref="sentPanel" tabindex="-1">
+        <h2 class="sent__title" x-text="sentTitle"></h2>
+        <p class="sent__body" x-text="sentBody"></p>
+        <dl class="sent__recap">
+          <div><dt>Name</dt><dd x-text="fields.name"></dd></div>
+          <div><dt>Contact</dt><dd x-text="fields.contact"></dd></div>
+          <div><dt>Project</dt><dd x-text="fields.service"></dd></div>
+        </dl>
+        <button type="button" class="btn btn--ghost btn--block" @click="edit()">Back to the form</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero__marquee" aria-hidden="true">
+    <div class="hero__marquee-track">
+      <div class="hero__marquee-group">
+        <span>Kitchen remodeling</span>
+        <span>Bathroom remodeling</span>
+        <span>Home additions</span>
+        <span>Whole-house renovations</span>
+        <span>Custom home building</span>
+        <span>Design-build</span>
+        <span>Historic restoration</span>
+        <span>Masonry and woodwork</span>
+        <span>Structural repairs</span>
+      </div>
+      <div class="hero__marquee-group">
+        <span>Kitchen remodeling</span>
+        <span>Bathroom remodeling</span>
+        <span>Home additions</span>
+        <span>Whole-house renovations</span>
+        <span>Custom home building</span>
+        <span>Design-build</span>
+        <span>Historic restoration</span>
+        <span>Masonry and woodwork</span>
+        <span>Structural repairs</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================ SERVICES ============================ -->
+<section class="section section--bone services" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2 class="section__title" id="services-title">Three disciplines. One standard.</h2>
+      <p class="section__deck">
+        From kitchen remodels to ground-up custom homes and historic restoration across Bucks
+        County, every project gets the same attention to detail.
+      </p>
+    </div>
+
+    <div class="services__grid">
+
+      <article class="service" data-reveal>
+        <figure class="service__figure">
+          <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75"
+               srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=640&amp;q=75 640w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75 828w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=1200&amp;q=75 1200w"
+               sizes="(max-width: 700px) 92vw, (max-width: 980px) 46vw, 31vw"
+               width="1200" height="750" loading="lazy" decoding="async"
+               alt="A remodeled galley kitchen with light shaker cabinets, stainless appliances and wide plank flooring.">
+          <span class="service__index" aria-hidden="true">01</span>
+        </figure>
+        <div class="service__body">
+          <h3 class="service__title">Home Remodeling</h3>
+          <p class="service__text">
+            Expert home remodeling across Bucks County, from a single custom kitchen to a complete
+            makeover of a house you are not leaving.
+          </p>
+          <ul class="service__list">
+            <li>Kitchen and bathroom remodeling</li>
+            <li>Seamless home additions</li>
+            <li>Whole-house renovations</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="service" data-reveal>
+        <figure class="service__figure">
+          <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75"
+               srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=640&amp;q=75 640w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75 828w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=1200&amp;q=75 1200w"
+               sizes="(max-width: 700px) 92vw, (max-width: 980px) 46vw, 31vw"
+               width="1200" height="750" loading="lazy" decoding="async"
+               alt="A new two storey structure under construction on concrete piers, with framing and sheathing going up.">
+          <span class="service__index" aria-hidden="true">02</span>
+        </figure>
+        <div class="service__body">
+          <h3 class="service__title">Custom Home Building</h3>
+          <p class="service__text">
+            Ground-up building, carried from the first set of drawings through to the day you get
+            the keys, with one team answerable for the whole of it.
+          </p>
+          <ul class="service__list">
+            <li>New construction homes</li>
+            <li>Comprehensive design-build services</li>
+            <li>Luxury custom estates</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="service" data-reveal>
+        <figure class="service__figure">
+          <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75"
+               srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=640&amp;q=75 640w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75 828w,
+                       https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=1200&amp;q=75 1200w"
+               sizes="(max-width: 700px) 92vw, (max-width: 980px) 46vw, 31vw"
+               width="1200" height="750" loading="lazy" decoding="async"
+               alt="A two storey home mid renovation, wrapped in housewrap with new sheathing and trim going on.">
+          <span class="service__index" aria-hidden="true">03</span>
+        </figure>
+        <div class="service__body">
+          <h3 class="service__title">Historic &amp; Property Restoration</h3>
+          <p class="service__text">
+            Restoration that preserves what makes a Bucks County property worth keeping, rather
+            than replacing it with something that only looks old.
+          </p>
+          <ul class="service__list">
+            <li>Period-accurate restorations</li>
+            <li>Structural repairs and stabilization</li>
+            <li>Masonry and woodwork preservation</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="services__foot" data-reveal>
+      Not sure which of these your project is?
+      <a class="link" href="#contact" data-estimate-link>Describe it and we will tell you.</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ PROJECTS ============================ -->
+<section class="section projects" id="projects" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="projects__head" data-reveal>
+      <div class="section__head">
+        <p class="eyebrow">Selected work</p>
+        <h2 class="section__title" id="projects-title">Recent builds across Bucks County.</h2>
+        <p class="section__deck">
+          Bathrooms, kitchens, restorations and ground-up homes in New Hope, Doylestown and
+          Kintnersville.
+        </p>
+      </div>
+      <a class="btn btn--ghost" href="#contact" data-estimate-link>Start your project</a>
+    </div>
+
+    <div class="projects__grid">
+
+      <figure class="project project--wide" data-reveal @click="toggle($event)" x-data="project()" data-project-id="primary-bath-remodel">
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1200&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1200&amp;q=75 1200w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1920&amp;q=75 1920w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 92vw, 62vw"
+             width="1600" height="1400" loading="lazy" decoding="async"
+             alt="A remodeled bathroom with a floating dark wood double vanity, stone countertop, two backlit mirrors and lighting under the cabinet.">
+        <figcaption>
+          <p class="project__name">Primary Bath Remodel</p>
+          <p class="project__meta">Bathroom, New Hope</p>
+        </figcaption>
+      </figure>
+
+      <figure class="project" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=828&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
+             width="1200" height="900" loading="lazy" decoding="async"
+             alt="A walk-in shower with a patterned mosaic feature wall, large format tile, a glass enclosure, a built in bench and a rainfall head.">
+        <figcaption>
+          <p class="project__name">Walk-In Shower and Tile</p>
+          <p class="project__meta">Bathroom, New Hope</p>
+        </figcaption>
+      </figure>
+
+      <figure class="project" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
+             width="1200" height="900" loading="lazy" decoding="async"
+             alt="A remodeled galley kitchen with light shaker cabinets, stainless appliances, wide plank flooring and a window at the far end.">
+        <figcaption>
+          <p class="project__name">Kitchen Remodel</p>
+          <p class="project__meta">Kitchen, New Hope</p>
+        </figcaption>
+      </figure>
+
+      <figure class="project" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=828&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
+             width="1200" height="900" loading="lazy" decoding="async"
+             alt="A finished detached garage at dusk, with a cupola on the ridge and warm light coming through the windows and door.">
+        <figcaption>
+          <p class="project__name">Detached Garage</p>
+          <p class="project__meta">Outdoor, Kintnersville</p>
+        </figcaption>
+      </figure>
+
+      <figure class="project" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
+             width="1200" height="900" loading="lazy" decoding="async"
+             alt="A new two storey structure going up on concrete piers, framed and partly sheathed, with the existing house alongside it.">
+        <figcaption>
+          <p class="project__name">New Construction Build</p>
+          <p class="project__meta">Residential, New Hope</p>
+        </figcaption>
+      </figure>
+
+      <figure class="project" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
+             width="1200" height="900" loading="lazy" decoding="async"
+             alt="A two storey home part way through an exterior renovation, wrapped in housewrap with its gables and dormers rebuilt.">
+        <figcaption>
+          <p class="project__name">Exterior Renovation</p>
+          <p class="project__meta">Exterior, Doylestown</p>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <p class="projects__note" data-reveal>
+      Photography is of Red Bridge Construction projects. Some frames are taken partway through the
+      work rather than at handover.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ ABOUT ============================ -->
+<section class="section section--bone story" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">Who you are hiring</p>
+      <h2 class="section__title" id="about-title">A small team, and the same name on every job since 1997.</h2>
+    </div>
+
+    <div class="story__grid">
+      <figure class="story__figure" data-reveal>
+        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=1200&amp;q=75"
+             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=640&amp;q=75 640w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=828&amp;q=75 828w,
+                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=1200&amp;q=75 1200w"
+             sizes="(max-width: 900px) 92vw, 42vw" width="1200" height="1500"
+             loading="lazy" decoding="async"
+             alt="Tile work in a finished walk-in shower, with a patterned mosaic feature wall and large format tile around it.">
+        <figcaption>Tile work from a recent bathroom remodel in New Hope.</figcaption>
+      </figure>
+
+      <div class="story__copy" data-reveal>
+        <p class="story__lead">
+          Rob Kielkucki founded Red Bridge Construction in 1997 with one mission: build for New Hope
+          and Bucks County at a standard worth signing his name to.
+        </p>
+        <p>
+          Twenty-eight years later, the same small team of designers, architects and craftsmen
+          carries every project with the same care. That holds true whether it is a bathroom tile
+          job in New Hope or a custom estate on the other side of the county.
+        </p>
+        <p>
+          Being small is the point. The person who walks your property is the person who prices the
+          work and the person you call when you have a question about it, and nothing gets handed
+          down a chain until nobody remembers what was agreed.
+        </p>
+
+        <dl class="stats">
+          <div><dt>28+</dt><dd>Years in business</dd></div>
+          <div><dt>500+</dt><dd>Projects delivered</dd></div>
+          <div><dt>1997</dt><dd>Founded in Kintnersville</dd></div>
+          <div><dt>1 yr</dt><dd>Workmanship warranty</dd></div>
+        </dl>
+
+        <ul class="points">
+          <li><span>Planned</span><p>Scope, allowances and a schedule agreed in writing before anyone starts.</p></li>
+          <li><span>Permitted</span><p>Township paperwork and inspections handled as part of the job.</p></li>
+          <li><span>Accountable</span><p>One team on site, and one person answering the phone about it.</p></li>
+          <li><span>Finished</span><p>Punch list closed out, site cleared, warranty in writing for a year.</p></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TESTIMONIALS ============================ -->
+<section class="section testimonials" aria-labelledby="testimonials-title">
+  <div class="container">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow">What clients say</p>
+      <h2 class="section__title" id="testimonials-title">Bucks County homeowners, in their own words.</h2>
+    </div>
+
+    <div class="quotes">
+
+      <figure class="quote" data-reveal>
+        <span class="quote__stars" aria-label="Rated 5 out of 5">
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+        </span>
+        <blockquote class="quote__body">
+          Rob and his team completely remodeled my home. The new kitchen was gourmet, the new
+          bathroom was stylish, and the new bedroom was comfortable. I highly recommend them!
+        </blockquote>
+        <figcaption class="quote__by">Nikki K., homeowner</figcaption>
+      </figure>
+
+      <figure class="quote" data-reveal>
+        <span class="quote__stars" aria-label="Rated 5 out of 5">
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+        </span>
+        <blockquote class="quote__body">
+          New deck construction was a game-changer for my home. The new deck was a true masterpiece.
+        </blockquote>
+        <figcaption class="quote__by">Steve, residential client</figcaption>
+      </figure>
+
+      <figure class="quote" data-reveal>
+        <span class="quote__stars" aria-label="Rated 5 out of 5">
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+          <svg viewBox="0 0 20 19" width="15" height="15" aria-hidden="true"><path d="M10 0l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L10 14.3 4.2 17.8l1.6-6.6L.6 6.8l6.8-.5z"/></svg>
+        </span>
+        <blockquote class="quote__body">
+          Bedroom remodel, and an amazing job throughout.
+        </blockquote>
+        <figcaption class="quote__by">Dwayne, residential client</figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section class="section section--bone faq" id="faq" aria-labelledby="faq-title">
+  <div class="container faq__grid">
+    <div class="faq__head" data-reveal>
+      <p class="eyebrow">Before you call</p>
+      <h2 class="section__title" id="faq-title">The questions we get most.</h2>
+      <p class="section__deck">Answered plainly, so the first conversation can start further along.</p>
+      <a class="btn btn--ghost faq__cta" href="#contact" data-estimate-link>Start your project</a>
+    </div>
+
+    <div class="faq__list" x-data="{ open: 1 }" data-reveal>
+
+      <div class="faq__item" :class="{ 'is-open': open === 1 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q1" class="faq__trigger" aria-controls="faq-a1"
+                  :aria-expanded="open === 1 ? 'true' : 'false'"
+                  @click="open = (open === 1 ? null : 1)">
+            <span class="faq__label">How does the first conversation work?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a1" role="region" aria-labelledby="faq-q1">
+          <div class="faq__answer">
+            <p>
+              Consultations are free. You send us the property and what you have in mind, we walk it
+              with you, and you get a written scope with allowances and a schedule. Nothing starts
+              until you have read that and agreed to it.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__item" :class="{ 'is-open': open === 2 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q2" class="faq__trigger" aria-controls="faq-a2"
+                  :aria-expanded="open === 2 ? 'true' : 'false'"
+                  @click="open = (open === 2 ? null : 2)">
+            <span class="faq__label">Which areas do you cover?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a2" role="region" aria-labelledby="faq-q2">
+          <div class="faq__answer">
+            <p>
+              Bucks County, with most of our work in New Hope, Doylestown and around our base in
+              Kintnersville. If you are just outside that, ask anyway. We would rather tell you
+              honestly than have you guess.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__item" :class="{ 'is-open': open === 3 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q3" class="faq__trigger" aria-controls="faq-a3"
+                  :aria-expanded="open === 3 ? 'true' : 'false'"
+                  @click="open = (open === 3 ? null : 3)">
+            <span class="faq__label">Are you licensed and insured?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a3" role="region" aria-labelledby="faq-q3">
+          <div class="faq__answer">
+            <p>
+              Yes, licensed and insured in Pennsylvania, and happy to put the certificates in front
+              of you before you sign anything. Township permits and inspections are handled as part
+              of the job rather than billed as an extra later.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__item" :class="{ 'is-open': open === 4 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q4" class="faq__trigger" aria-controls="faq-a4"
+                  :aria-expanded="open === 4 ? 'true' : 'false'"
+                  @click="open = (open === 4 ? null : 4)">
+            <span class="faq__label">How far out are you booking?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a4" role="region" aria-labelledby="faq-q4">
+          <div class="faq__answer">
+            <p>
+              It moves with the season and with how long the township takes to return a permit.
+              Smaller remodels usually start sooner than additions and ground-up builds. Tell us
+              your timeline in the form and we will give you a real date rather than a hopeful one.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__item" :class="{ 'is-open': open === 5 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q5" class="faq__trigger" aria-controls="faq-a5"
+                  :aria-expanded="open === 5 ? 'true' : 'false'"
+                  @click="open = (open === 5 ? null : 5)">
+            <span class="faq__label">What if the job turns out to be bigger than expected?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a5" role="region" aria-labelledby="faq-q5">
+          <div class="faq__answer">
+            <p>
+              Older Bucks County houses hide things, and occasionally we open a wall and find work
+              nobody could have quoted for. When that happens we stop, show you what we found, and
+              price it before carrying on. You will never see it for the first time on an invoice.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq__item" :class="{ 'is-open': open === 6 }">
+        <h3 class="faq__q">
+          <button type="button" id="faq-q6" class="faq__trigger" aria-controls="faq-a6"
+                  :aria-expanded="open === 6 ? 'true' : 'false'"
+                  @click="open = (open === 6 ? null : 6)">
+            <span class="faq__label">What is covered after the job is finished?</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="faq__panel" id="faq-a6" role="region" aria-labelledby="faq-q6">
+          <div class="faq__answer">
+            <p>
+              Our workmanship carries a one year warranty in writing, alongside whatever the
+              manufacturers cover on the materials themselves. If something we installed is not
+              right inside that year, we come back and put it right.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section class="section section--dark contact" id="contact" aria-labelledby="contact-title">
+  <div class="container contact__grid">
+
+    <div class="contact__copy" data-reveal>
+      <p class="eyebrow">Get started</p>
+      <h2 class="section__title" id="contact-title">Tell us what you are building.</h2>
+      <p class="section__deck">
+        No pressure and no sales call. A real conversation about your New Hope or Bucks County
+        project, answered within one business day. If it is easier to talk it through, call us
+        during business hours.
+      </p>
+
+      <dl class="details">
+        <div><dt>Call</dt><dd><a class="link" href="tel:+12155341008">(215) 534-1008</a></dd></div>
+        <div><dt>Email</dt><dd><a class="link" href="mailto:redbridgeconstructionllc@gmail.com">redbridgeconstructionllc@gmail.com</a></dd></div>
+        <div><dt>Visit</dt><dd>231 Red Bridge Rd, Kintnersville, PA 18930</dd></div>
+        <div><dt>Hours</dt><dd>Monday to Friday, 8:00 AM to 5:00 PM</dd></div>
+      </dl>
+
+      <ul class="badges">
+        <li>Licensed &amp; insured</li>
+        <li>28+ years</li>
+        <li>On-time delivery</li>
+        <li>Free consultations</li>
+      </ul>
+    </div>
+
+    <div class="card card--lg" data-reveal x-data="projectForm('contact')">
+      <form class="form" id="contact-project-form" novalidate @submit.prevent="submit()" x-show="!sent">
+        <div class="form__head">
+          <h3 class="form__title">Start your project</h3>
+          <p class="form__note">All four fields are needed before we can scope anything. We never share your information.</p>
+        </div>
+
+        <div class="form__alert" role="alert" x-show="summary" x-cloak x-text="summary"></div>
+
+        <div class="field">
+          <label for="contact-name">Full name</label>
+          <input type="text" id="contact-name" name="name" autocomplete="name"
+                 x-model="fields.name" @blur="touch('name')"
+                 :aria-invalid="errors.name ? 'true' : 'false'"
+                 :aria-describedby="errors.name ? 'contact-name-error' : false">
+          <p class="field__error" id="contact-name-error" x-show="errors.name" x-cloak x-text="errors.name"></p>
+        </div>
+
+        <div class="field">
+          <label for="contact-contact">Email or phone</label>
+          <input type="text" id="contact-contact" name="contact" autocomplete="email"
+                 x-model="fields.contact" @blur="touch('contact')"
+                 :aria-invalid="errors.contact ? 'true' : 'false'"
+                 :aria-describedby="errors.contact ? 'contact-contact-hint contact-contact-error' : 'contact-contact-hint'">
+          <p class="field__hint" id="contact-contact-hint">Whichever you would rather we used.</p>
+          <p class="field__error" id="contact-contact-error" x-show="errors.contact" x-cloak x-text="errors.contact"></p>
+        </div>
+
+        <div class="field">
+          <label for="contact-service">What are you building?</label>
+          <div class="select">
+            <select id="contact-service" name="service" x-model="fields.service" @change="touch('service')"
+                    :aria-invalid="errors.service ? 'true' : 'false'"
+                    :aria-describedby="errors.service ? 'contact-service-error' : false">
+              <option value="">Pick the closest fit</option>
+              <option value="Kitchen or bathroom remodel">Kitchen or bathroom remodel</option>
+              <option value="Addition or whole-house renovation">Addition or whole-house renovation</option>
+              <option value="New custom home">New custom home</option>
+              <option value="Historic or property restoration">Historic or property restoration</option>
+              <option value="Something else">Something else</option>
+            </select>
+          </div>
+          <p class="field__error" id="contact-service-error" x-show="errors.service" x-cloak x-text="errors.service"></p>
+        </div>
+
+        <div class="field">
+          <label for="contact-details">Describe the project</label>
+          <textarea id="contact-details" name="details" rows="5"
+                    placeholder="The address or township, what you have in mind, the age of the property if you know it, and when you would like to start."
+                    x-model="fields.details" @blur="touch('details')"
+                    :aria-invalid="errors.details ? 'true' : 'false'"
+                    :aria-describedby="errors.details ? 'contact-details-error' : false"></textarea>
+          <p class="field__error" id="contact-details-error" x-show="errors.details" x-cloak x-text="errors.details"></p>
+        </div>
+
+        <button type="submit" class="btn btn--red btn--block" :disabled="busy"
+                x-text="busy ? 'Sending...' : 'Send request'">Send request</button>
+        <p class="form__foot" x-text="footNote"></p>
+      </form>
+
+      <div class="sent" role="status" x-show="sent" x-cloak x-ref="sentPanel" tabindex="-1">
+        <h3 class="sent__title" x-text="sentTitle"></h3>
+        <p class="sent__body" x-text="sentBody"></p>
+        <dl class="sent__recap">
+          <div><dt>Name</dt><dd x-text="fields.name"></dd></div>
+          <div><dt>Contact</dt><dd x-text="fields.contact"></dd></div>
+          <div><dt>Project</dt><dd x-text="fields.service"></dd></div>
+        </dl>
+        <button type="button" class="btn btn--ghost btn--block" @click="edit()">Back to the form</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <a class="wordmark" href="#top" aria-label="Red Bridge Construction, back to top">
+      <svg class="wordmark__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+        <path d="M2 11.5h28" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M4 28V11.5M28 28V11.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M4 28c0-7.2 5.4-11 12-11s12 3.8 12 11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span class="wordmark__text">
+        <span class="wordmark__name">RED BRIDGE</span>
+        <span class="wordmark__sub">CONSTRUCTION LLC</span>
+      </span>
+    </a>
+
+    <nav class="footer__links" aria-label="Footer">
+      <a href="#services">Services</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:+12155341008">(215) 534-1008</a>
+    </nav>
+  </div>
+
+  <div class="container footer__base">
+    <p>&copy; 2026 Red Bridge Construction LLC. All rights reserved. Licensed and insured in Pennsylvania. Serving New Hope, Doylestown, Kintnersville and Bucks County.</p>
+    <p>231 Red Bridge Rd, Kintnersville, PA 18930</p>
+  </div>
+</footer>
+
+</body>
+</html>
