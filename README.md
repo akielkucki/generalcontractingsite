@@ -348,24 +348,18 @@ on submit, staying quiet about an empty field nobody has tried to submit yet.
 
 ## Photography
 
-Every image is hotlinked from the existing live site, through its Next.js image optimiser, which
-is what serves the resized WebP behind each `srcset`:
+Every project photograph is hosted locally in `assets/portfolio/`, pre-sized as WebP files
+named `<name>-<width>.webp` (640, 828 and 1200 wide, plus 1920 and 2048 for the hero). These are
+the same resized WebP files the old site's Next.js image optimiser served, so nothing depends on
+that site staying up. The full size originals are kept in `assets/portfolio/originals/` in case a
+new size is needed; they are large (`bathroom_remodel.png` is 7.0MB) and are not referenced by the
+page.
 
-```
-https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2F<name>&w=<width>&q=75
-```
-
-That works today and keeps the page fast, but it ties this site to the old one staying up. The
-originals are large: `bathroom_remodel.png` is 7.0MB and `bob_house.jpg` is 4.0MB, so they need
-resizing rather than dropping in as they are.
-
-Before launch, copy them into `assets/portfolio/`, resize, and then:
-
-- **Projects wall:** in `data/projects.json`, set `"optimizer": false`, `"imageBase": ""`, and
-  point each `image` at its local path. The renderer stops building optimiser URLs and uses the
-  paths directly. A full `http(s)` URL in `image` is always used as-is.
-- **Everywhere else** (hero, service cards, the About figure) is still hand written markup, so
-  swap those `src` and `srcset` values in `index.html`.
+- **Projects wall:** `data/projects.json` has `"optimizer": false` and each `image` set to
+  `assets/portfolio/<name>.webp`. The renderer expands that to the `<name>-<width>.webp` files for
+  every entry in `widths`, so a new project needs one file per width.
+- **Everywhere else** (hero, service cards, the About figure) is hand written markup in
+  `index.html` and points at the sized files directly.
 
 Six photographs are in use:
 

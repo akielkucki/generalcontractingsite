@@ -281,7 +281,14 @@
       };
     });
   });
-
+ /* ------------------------------------------------- Featured Hero ---- */
+  Alpine.data('featuredProject', function () {
+    return {
+      init: function () {
+      
+      }
+    }
+  });
   /* ==========================================================  Motion  == */
 
   function initHeroMotion() {
@@ -543,20 +550,28 @@
   }
 
   /* Builds src and srcset for one project. A full URL is taken as given; a
-     path goes through the Next.js optimiser while `optimizer` is on, and is
-     simply joined to imageBase once the photographs are hosted locally. */
+     path goes through the Next.js optimiser while `optimizer` is on. Once the
+     photographs are hosted locally, a local .webp path is expanded to its
+     pre-sized siblings, name-<width>.webp; any other path is used as is. */
   function buildImage(project, data) {
     var path = project.image || '';
     if (/^https?:/i.test(path)) return { src: path, srcset: '' };
 
     var base = data.imageBase || '';
-
-    if (!data.optimizer) return { src: base + path, srcset: '' };
-
     var widths = data.widths && data.widths.length ? data.widths : [640, 828, 1200];
-    var url = function (width) {
-      return base + '/_next/image?url=' + encodeURIComponent(path) + '&w=' + width + '&q=75';
-    };
+    var url;
+
+    if (data.optimizer) {
+      url = function (width) {
+        return base + '/_next/image?url=' + encodeURIComponent(path) + '&w=' + width + '&q=75';
+      };
+    } else if (/\.webp$/i.test(path)) {
+      url = function (width) {
+        return base + path.replace(/\.webp$/i, '-' + width + '.webp');
+      };
+    } else {
+      return { src: base + path, srcset: '' };
+    }
 
     return {
       src: url(widths[Math.min(1, widths.length - 1)]),
