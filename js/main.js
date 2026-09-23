@@ -125,6 +125,7 @@
 
         init: function () {
           var self = this;
+          
           this.keys.forEach(function (key) {
             self.$watch('fields.' + key, function () {
               /* Clear an error as soon as the value becomes valid, never
@@ -132,6 +133,7 @@
               if (self.errors[key]) {
                 self.errors[key] = self.check(key);
                 self.refreshSummary();
+               
               }
             });
           });
@@ -280,15 +282,17 @@
         }
       };
     });
+
+    /* ------------------------------------------------ Featured Hero ---- */
+
+    Alpine.data('featuredProject', function () {
+      return {
+        init: function () {
+        }
+      };
+    });
   });
- /* ------------------------------------------------- Featured Hero ---- */
-  Alpine.data('featuredProject', function () {
-    return {
-      init: function () {
-      
-      }
-    }
-  });
+
   /* ==========================================================  Motion  == */
 
   function initHeroMotion() {
