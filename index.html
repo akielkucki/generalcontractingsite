@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Red Bridge Construction | Remodeling, Custom Homes and Restoration in Bucks County, PA</title>
 <meta name="description" content="Red Bridge Construction has built, remodeled and restored homes across New Hope and Bucks County since 1997. Kitchens, additions, custom homes and historic restoration. Licensed and insured in PA.">
-<meta name="theme-color" content="#14161A">
+<meta name="theme-color" content="#0C0C0D">
 <link rel="canonical" href="https://www.redbridgeconstructionllc.com/">
 
 <meta property="og:type" content="website">
@@ -94,7 +94,7 @@
     </nav>
 
     <a class="nav__phone" href="tel:+12155341008">(215) 534-1008</a>
-    <a class="btn btn--red nav__cta" href="#contact" data-estimate-link>Start a project</a>
+    <a class="btn btn--gold nav__cta" href="#contact" data-estimate-link>Start a project</a>
 
     <button type="button" class="nav__toggle" x-ref="toggle" aria-controls="site-menu"
             :aria-expanded="open ? 'true' : 'false'" @click="toggle()">
@@ -122,7 +122,7 @@
           <li><span>Monday to Friday, 8:00 to 5:00</span></li>
         </ul>
 
-        <a class="btn btn--red nav__overlay-cta" href="#contact" data-estimate-link @click="close(false)">Start a project</a>
+        <a class="btn btn--gold nav__overlay-cta" href="#contact" data-estimate-link @click="close(false)">Start a project</a>
       </div>
     </div>
   </div>
@@ -166,8 +166,8 @@
   
 
       <div class="hero__ctas">
-        <a class="btn btn--red hero__cta--estimate" href="#contact" data-estimate-link>Start your project</a>
-        <a class="btn btn--red hero__cta--call" href="tel:+12155341008">Call (215) 534-1008</a>
+        <a class="btn btn--gold hero__cta--estimate" href="#contact" data-estimate-link>Start your project</a>
+        <a class="btn btn--gold hero__cta--call" href="tel:+12155341008">Call (215) 534-1008</a>
         <a class="btn btn--ghost hero__cta--browse" href="#projects">See the work</a>
       </div>
 
@@ -227,7 +227,7 @@
           <p class="field__error" id="hero-details-error" x-show="errors.details" x-cloak x-text="errors.details"></p>
         </div>
 
-        <button type="submit" class="btn btn--red btn--block" :disabled="busy"
+        <button type="submit" class="btn btn--gold btn--block" :disabled="busy"
                 x-text="busy ? 'Sending...' : 'Send request'">Send request</button>
         <p class="form__foot" x-text="footNote"></p>
       </form>
@@ -276,7 +276,7 @@
 </section>
 
 <!-- ============================ SERVICES ============================ -->
-<section class="section section--bone services" id="services" aria-labelledby="services-title">
+<section class="section services" id="services" aria-labelledby="services-title">
   <div class="container">
     <div class="section__head" data-reveal>
       <p class="eyebrow">What we do</p>
@@ -388,93 +388,23 @@
       <a class="btn btn--ghost" href="#contact" data-estimate-link>Start your project</a>
     </div>
 
-    <div class="projects__grid">
+    <!-- Filled from data/projects.json by renderProjects() in js/main.js.
+         Three lanes of a vertical marquee; add projects in the JSON, not here. -->
+    <div class="projects__wall" data-projects-wall data-reveal>
 
-      <figure class="project project--wide" data-reveal @click="toggle($event)" x-data="project()" data-project-id="primary-bath-remodel">
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1200&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1200&amp;q=75 1200w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel.png&amp;w=1920&amp;q=75 1920w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 92vw, 62vw"
-             width="1600" height="1400" loading="lazy" decoding="async"
-             alt="A remodeled bathroom with a floating dark wood double vanity, stone countertop, two backlit mirrors and lighting under the cabinet.">
-        <figcaption>
-          <p class="project__name">Primary Bath Remodel</p>
-          <p class="project__meta">Bathroom, New Hope</p>
-        </figcaption>
-      </figure>
-
-      <figure class="project" data-reveal>
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=828&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=640&amp;q=75 640w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbathroom_remodel_2.jpg&amp;w=1200&amp;q=75 1200w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
-             width="1200" height="900" loading="lazy" decoding="async"
-             alt="A walk-in shower with a patterned mosaic feature wall, large format tile, a glass enclosure, a built in bench and a rainfall head.">
-        <figcaption>
-          <p class="project__name">Walk-In Shower and Tile</p>
-          <p class="project__meta">Bathroom, New Hope</p>
-        </figcaption>
-      </figure>
-
-      <figure class="project" data-reveal>
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=640&amp;q=75 640w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fkitchen_remodel.png&amp;w=1200&amp;q=75 1200w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
-             width="1200" height="900" loading="lazy" decoding="async"
-             alt="A remodeled galley kitchen with light shaker cabinets, stainless appliances, wide plank flooring and a window at the far end.">
-        <figcaption>
-          <p class="project__name">Kitchen Remodel</p>
-          <p class="project__meta">Kitchen, New Hope</p>
-        </figcaption>
-      </figure>
-
-      <figure class="project" data-reveal>
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=828&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=640&amp;q=75 640w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fshed_remodel.jpg&amp;w=1200&amp;q=75 1200w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
-             width="1200" height="900" loading="lazy" decoding="async"
-             alt="A finished detached garage at dusk, with a cupola on the ridge and warm light coming through the windows and door.">
-        <figcaption>
-          <p class="project__name">Detached Garage</p>
-          <p class="project__meta">Outdoor, Kintnersville</p>
-        </figcaption>
-      </figure>
-
-      <figure class="project" data-reveal>
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=640&amp;q=75 640w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fbob_house.jpg&amp;w=1200&amp;q=75 1200w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
-             width="1200" height="900" loading="lazy" decoding="async"
-             alt="A new two storey structure going up on concrete piers, framed and partly sheathed, with the existing house alongside it.">
-        <figcaption>
-          <p class="project__name">New Construction Build</p>
-          <p class="project__meta">Residential, New Hope</p>
-        </figcaption>
-      </figure>
-
-      <figure class="project" data-reveal>
-        <img src="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75"
-             srcset="https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=640&amp;q=75 640w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=828&amp;q=75 828w,
-                     https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2Fclient_project.jpg&amp;w=1200&amp;q=75 1200w"
-             sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 31vw"
-             width="1200" height="900" loading="lazy" decoding="async"
-             alt="A two storey home part way through an exterior renovation, wrapped in housewrap with its gables and dormers rebuilt.">
-        <figcaption>
-          <p class="project__name">Exterior Renovation</p>
-          <p class="project__meta">Exterior, Doylestown</p>
-        </figcaption>
-      </figure>
-
+      <p class="projects__fallback" data-projects-fallback hidden>
+        Our recent work could not be loaded just now. Call
+        <a class="link" href="tel:+12155341008">(215) 534-1008</a> and we will walk you through it.
+      </p>
     </div>
+
+    <noscript>
+      <p class="projects__note">
+        Our project photographs need JavaScript to load. Call (215) 534-1008 or email
+        redbridgeconstructionllc@gmail.com and we will send them over.
+      </p>
+    </noscript>
+
 
     <p class="projects__note" data-reveal>
       Photography is of Red Bridge Construction projects. Some frames are taken partway through the
@@ -484,7 +414,7 @@
 </section>
 
 <!-- ============================ ABOUT ============================ -->
-<section class="section section--bone story" id="about" aria-labelledby="about-title">
+<section class="section section--light story" id="about" aria-labelledby="about-title">
   <div class="container">
     <div class="section__head" data-reveal>
       <p class="eyebrow">Who you are hiring</p>
@@ -595,7 +525,7 @@
 </section>
 
 <!-- ============================ FAQ ============================ -->
-<section class="section section--bone faq" id="faq" aria-labelledby="faq-title">
+<section class="section faq" id="faq" aria-labelledby="faq-title">
   <div class="container faq__grid">
     <div class="faq__head" data-reveal>
       <p class="eyebrow">Before you call</p>
@@ -731,7 +661,7 @@
 </section>
 
 <!-- ============================ CONTACT ============================ -->
-<section class="section section--dark contact" id="contact" aria-labelledby="contact-title">
+<section class="section contact" id="contact" aria-labelledby="contact-title">
   <div class="container contact__grid">
 
     <div class="contact__copy" data-reveal>
@@ -813,7 +743,7 @@
           <p class="field__error" id="contact-details-error" x-show="errors.details" x-cloak x-text="errors.details"></p>
         </div>
 
-        <button type="submit" class="btn btn--red btn--block" :disabled="busy"
+        <button type="submit" class="btn btn--gold btn--block" :disabled="busy"
                 x-text="busy ? 'Sending...' : 'Send request'">Send request</button>
         <p class="form__foot" x-text="footNote"></p>
       </form>
@@ -863,6 +793,47 @@
     <p>231 Red Bridge Rd, Kintnersville, PA 18930</p>
   </div>
 </footer>
+
+<!-- ============================ PROJECT DRAWER ============================ -->
+<!-- Lives at the end of the body on purpose: a fixed overlay nested inside a
+     section is at the mercy of any ancestor that clips or creates a stacking
+     context. Filled by initDrawer() in js/main.js. Set data-drawer-side to
+     "left" to have it come in from the other edge. -->
+<div class="drawer" data-drawer data-drawer-side="right">
+  <div class="drawer__scrim" data-drawer-dismiss></div>
+
+  <aside class="drawer__panel" role="dialog" aria-modal="true"
+         aria-labelledby="drawer-title" tabindex="-1" data-drawer-panel>
+
+    <button type="button" class="drawer__close" data-drawer-dismiss>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+      </svg>
+      <span class="sr-only">Close</span>
+    </button>
+
+    <figure class="drawer__media">
+      <img data-drawer-image src="" alt="" width="1200" height="900" decoding="async">
+    </figure>
+
+    <div class="drawer__body">
+      <p class="drawer__eyebrow" data-drawer-eyebrow></p>
+      <h2 class="drawer__title" id="drawer-title" data-drawer-title></h2>
+      <p class="drawer__text" data-drawer-text></p>
+
+      <dl class="drawer__facts" data-drawer-facts></dl>
+
+      <div class="drawer__scope" data-drawer-scope hidden>
+        <p class="drawer__scope-label">Scope of work</p>
+        <ul data-drawer-scope-list></ul>
+      </div>
+
+      <div class="drawer__actions">
+        <a class="btn btn--gold btn--block" href="#contact" data-drawer-cta>Start a project like this</a>
+      </div>
+    </div>
+  </aside>
+</div>
 
 </body>
 </html>

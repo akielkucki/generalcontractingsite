@@ -1,30 +1,33 @@
 /* ==========================================================================
    Red Bridge Construction
    Palette, type and layout system
+
+   Palette and typography are shared with the Caleb Electric site in
+   ../ElectricalSite. See the Palette section of the README before changing a
+   token: gold is 8.4:1 on obsidian but only 2.1:1 on ivory, and that single
+   fact drives most of the rules below.
    ========================================================================== */
 
 :root {
-  /* Brand palette */
-  --ink:       #14161A;   /* nav, hero, contact band, footer */
-  --slate:     #1E2126;   /* elevated dark surfaces */
-  --red:       #C2371F;   /* brand red, carried over from the current site */
-  --red-deep:  #9E2B17;
-  --red-light: #E4705A;   /* accent text on dark, where the brand red is too dim */
-  --paper:     #FFFFFF;
-  --bone:      #F7F5F2;   /* warm off white, the default section ground */
-  --sand:      #EFEAE3;   /* third tone, for inset wells and image mats */
-
-  --stone:     #5A5F68;   /* supporting text on light */
-  --mist:      #A8ADB5;   /* supporting text on dark */
+  /* Brand palette, shared with the Caleb Electric site */
+  --obsidian:  #0C0C0D;
+  --graphite:  #1B1C1E;
+  --gold:      #C6A66B;
+  --ivory:     #F4F1E9;
+  --silver:    #AAA8A2;
+  --bronze:    #765A2E;
 
   /* Derived working tones */
-  --red-hover: #D24328;
-  --alert:     #B3341C;
+  --gold-hover: #D4B67F;
+  --well:       #131416;   /* input wells inside graphite panels */
+  --ink:        #17171A;   /* body text on ivory */
+  --ink-muted:  #55555A;   /* supporting text on ivory */
+  --alert:      #E0796B;
 
-  --rule:        rgba(255, 255, 255, 0.12);   /* hairlines on dark */
-  --rule-strong: rgba(255, 255, 255, 0.22);
-  --line:        rgba(20, 22, 26, 0.13);      /* hairlines on light */
-  --line-strong: rgba(20, 22, 26, 0.26);
+  --rule:        rgba(244, 241, 233, 0.11);   /* hairlines on dark */
+  --rule-strong: rgba(244, 241, 233, 0.20);
+  --rule-dark:   rgba(12, 12, 13, 0.14);      /* hairlines on the ivory band */
+  --rule-dark-strong: rgba(12, 12, 13, 0.26);
 
   /* Layout */
   --nav-h: 74px;
@@ -35,8 +38,8 @@
   --radius: 7px;
   --radius-sm: 6px;
 
-  --shadow-card:  0 1px 2px rgba(20, 22, 26, 0.05), 0 12px 32px -18px rgba(20, 22, 26, 0.22);
-  --shadow-float: 0 20px 64px -24px rgba(0, 0, 0, 0.6);
+  --shadow-card:  0 1px 2px rgba(0, 0, 0, 0.34), 0 12px 32px -18px rgba(0, 0, 0, 0.66);
+  --shadow-float: 0 20px 64px -24px rgba(0, 0, 0, 0.8);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -53,8 +56,8 @@ html {
 body {
   margin: 0;
   overflow-x: clip;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--obsidian);
+  color: var(--ivory);
   font-family: Manrope, "Helvetica Neue", Arial, sans-serif;
   font-size: 16.5px;
   font-weight: 400;
@@ -77,19 +80,13 @@ a { color: inherit; text-decoration: none; }
 /* ------------------------------------------------------------- Focus --- */
 
 :focus-visible {
-  outline: 2px solid var(--red);
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
   border-radius: 2px;
 }
-/* The brand red only reaches 3.3:1 against the ink ground, so dark surfaces
-   take the lighter tint for the focus ring. */
-.nav :focus-visible,
-.footer :focus-visible,
-.hero :focus-visible,
-.section--dark :focus-visible { outline-color: var(--red-light); }
-/* except inside the white form card, which is light again */
-.hero .card :focus-visible,
-.section--dark .card :focus-visible { outline-color: var(--red); }
+/* Gold is 8.4:1 on obsidian, so it rings everything on the dark ground.
+   On the ivory band it drops to 2.1:1, so bronze takes over there. */
+.section--light :focus-visible { outline-color: var(--bronze); }
 
 .skip-link {
   position: absolute;
@@ -98,8 +95,8 @@ a { color: inherit; text-decoration: none; }
   z-index: 200;
   padding: 12px 20px;
   transform: translate(-50%, -160%);
-  background: var(--red);
-  color: #fff;
+  background: var(--gold);
+  color: var(--obsidian);
   border-radius: var(--radius-sm);
   font-size: 14.5px;
   font-weight: 600;
@@ -133,8 +130,9 @@ a { color: inherit; text-decoration: none; }
   scroll-margin-top: calc(var(--nav-h) + 8px);
 }
 
-.section--bone { background: var(--bone); }
-.section--dark { background: var(--ink); color: var(--paper); }
+/* Dark is the default ground. One ivory band breaks the run, the way the
+   workmanship section does on the electrical site. */
+.section--light { background: var(--ivory); color: var(--ink); }
 
 .section__head { max-width: 780px; }
 
@@ -144,7 +142,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 11px;
   margin-bottom: 20px;
-  color: var(--red);
+  color: var(--gold);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -158,8 +156,7 @@ a { color: inherit; text-decoration: none; }
   height: 3px;
   background: currentColor;
 }
-.section--dark .eyebrow,
-.hero .eyebrow { color: var(--red-light); }
+.section--light .eyebrow { color: var(--bronze); }
 
 .section__title {
   font-size: clamp(29px, 4.1vw, 46px);
@@ -172,26 +169,26 @@ a { color: inherit; text-decoration: none; }
 .section__deck {
   margin-top: 20px;
   max-width: 62ch;
-  color: var(--stone);
+  color: var(--silver);
   font-size: clamp(16px, 1.4vw, 18px);
   line-height: 1.7;
 }
-.section--dark .section__deck { color: var(--mist); }
+.section--light .section__deck { color: var(--ink-muted); }
 
 .link {
-  color: var(--red);
+  color: var(--gold);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
-  text-decoration-color: rgba(194, 55, 31, 0.42);
+  text-decoration-color: rgba(198, 166, 107, 0.45);
   transition: text-decoration-color 0.2s var(--ease);
 }
-.link:hover { text-decoration-color: var(--red); }
-.section--dark .link {
-  color: var(--red-light);
-  text-decoration-color: rgba(228, 112, 90, 0.45);
+.link:hover { text-decoration-color: var(--gold); }
+.section--light .link {
+  color: var(--bronze);
+  text-decoration-color: rgba(118, 90, 46, 0.4);
 }
-.section--dark .link:hover { text-decoration-color: var(--red-light); }
+.section--light .link:hover { text-decoration-color: var(--bronze); }
 
 /* ------------------------------------------------------------ Buttons -- */
 
@@ -211,39 +208,37 @@ a { color: inherit; text-decoration: none; }
   transition: background-color 0.22s var(--ease), border-color 0.22s var(--ease), color 0.22s var(--ease);
 }
 
-.btn--red { background: var(--red); color: #fff; }
-.btn--red:hover { background: var(--red-hover); }
+.btn--gold { background: var(--gold); color: var(--obsidian); }
+.btn--gold:hover { background: var(--gold-hover); }
 
 /* Ghost takes its edge from whichever ground it is standing on. */
 .btn--ghost {
   background: transparent;
-  color: var(--ink);
-  border-color: var(--line-strong);
-}
-.btn--ghost:hover {
-  border-color: var(--ink);
-  background: rgba(20, 22, 26, 0.035);
-}
-.section--dark .btn--ghost,
-.hero .btn--ghost {
-  color: var(--paper);
+  color: var(--ivory);
   border-color: var(--rule-strong);
 }
-.section--dark .btn--ghost:hover,
-.hero .btn--ghost:hover {
-  border-color: rgba(255, 255, 255, 0.44);
-  background: rgba(255, 255, 255, 0.05);
+.btn--ghost:hover {
+  border-color: rgba(244, 241, 233, 0.42);
+  background: rgba(244, 241, 233, 0.05);
+}
+.section--light .btn--ghost {
+  color: var(--ink);
+  border-color: var(--rule-dark-strong);
+}
+.section--light .btn--ghost:hover {
+  border-color: rgba(12, 12, 13, 0.48);
+  background: rgba(12, 12, 13, 0.035);
 }
 
 .btn--block { width: 100%; }
 
 /* ===========================================================  Wordmark  == */
 
-/* No logo artwork was supplied, so the mark is drawn inline: a red span over
+/* No logo artwork was supplied, so the mark is drawn inline: a gold span over
    two piers. Swap in assets/logo.svg here if the real artwork turns up. */
 .wordmark { display: inline-flex; align-items: center; gap: 11px; }
 
-.wordmark__mark { width: 30px; height: 30px; flex: none; color: var(--red); }
+.wordmark__mark { width: 30px; height: 30px; flex: none; color: var(--gold); }
 
 .wordmark__text { display: flex; flex-direction: column; gap: 4px; }
 
@@ -259,7 +254,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 600;
   letter-spacing: 0.2em;
   line-height: 1;
-  color: var(--mist);
+  color: var(--silver);
 }
 
 /* ==========================================================  Navigation == */
@@ -268,8 +263,8 @@ a { color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--obsidian);
+  color: var(--ivory);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s var(--ease);
 }
@@ -301,7 +296,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 14.5px;
   font-weight: 600;
   letter-spacing: 0.004em;
-  color: var(--mist);
+  color: var(--silver);
   transition: color 0.2s var(--ease);
 }
 
@@ -312,23 +307,23 @@ a { color: inherit; text-decoration: none; }
   right: 0;
   bottom: -2px;
   height: 2px;
-  background: var(--red);
+  background: var(--gold);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.28s var(--ease);
 }
 .nav__links a:hover,
-.nav__links a.is-current { color: var(--paper); }
+.nav__links a.is-current { color: var(--ivory); }
 .nav__links a.is-current::after { transform: scaleX(1); }
 
 .nav__phone {
-  color: var(--paper);
+  color: var(--ivory);
   font-size: 14.5px;
   font-weight: 600;
   white-space: nowrap;
   transition: color 0.2s var(--ease);
 }
-.nav__phone:hover { color: var(--red-light); }
+.nav__phone:hover { color: var(--gold); }
 
 .nav__cta { min-height: 42px; padding: 0 20px; font-size: 14px; }
 
@@ -357,7 +352,7 @@ a { color: inherit; text-decoration: none; }
   left: 0;
   width: 24px;
   height: 1.5px;
-  background: var(--paper);
+  background: var(--ivory);
   transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
 }
 .nav__toggle-bars span:nth-child(1) { top: 2px; }
@@ -375,7 +370,7 @@ a { color: inherit; text-decoration: none; }
   z-index: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--ink);
+  background: var(--obsidian);
   opacity: 0;
   visibility: hidden;
   clip-path: inset(0 0 100% 0);
@@ -408,7 +403,7 @@ a { color: inherit; text-decoration: none; }
 .nav__overlay-links a {
   display: block;
   padding: clamp(8px, 1.4vh, 14px) 0;
-  color: var(--paper);
+  color: var(--ivory);
   font-size: clamp(32px, 9vw, 54px);
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -418,7 +413,7 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.42s var(--ease), transform 0.52s var(--ease), color 0.2s var(--ease);
 }
 .nav__overlay-links a:hover,
-.nav__overlay-links a.is-current { color: var(--red-light); }
+.nav__overlay-links a.is-current { color: var(--gold); }
 
 .nav__overlay-foot {
   margin-top: auto;
@@ -436,7 +431,7 @@ a { color: inherit; text-decoration: none; }
 .nav__overlay-meta li {
   font-size: 14.5px;
   line-height: 1.5;
-  color: var(--mist);
+  color: var(--silver);
 }
 /* Phone, email and address are meant to be tapped, so each row carries a full
    target rather than the 19px the text alone would give it. */
@@ -447,7 +442,7 @@ a { color: inherit; text-decoration: none; }
   min-height: 44px;
 }
 .nav__overlay-meta a { transition: color 0.2s var(--ease); }
-.nav__overlay-meta a:hover { color: var(--paper); }
+.nav__overlay-meta a:hover { color: var(--ivory); }
 
 .nav__overlay-cta {
   width: 100%;
@@ -508,11 +503,11 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   min-height: calc(100vh - var(--nav-h));
   min-height: calc(100svh - var(--nav-h));
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--obsidian);
+  color: var(--ivory);
 
   /* The review badge sits above the headline, so on mobile it falls inside the
-     red band and the band has to be told how tall it is. Its box is pinned
+     gold band and the band has to be told how tall it is. Its box is pinned
      rather than left to line-height, so the band maths below stays exact. */
   --badge-h: 24px;
   --badge-gap: clamp(14px, 1.6vw, 20px);
@@ -547,7 +542,7 @@ a { color: inherit; text-decoration: none; }
 /* Sits above the headline as a kicker. No margin-top: it is the first thing in
    the copy column, so the hero's own padding sets the space above it, and any
    margin here would push the headline down and open a gap under the nav that
-   the red band could not reach. `align-self` keeps it shrink to fit inside the
+   the gold band could not reach. `align-self` keeps it shrink to fit inside the
    flex column rather than stretching, so it can be centred on mobile. */
 .review-badge {
   align-self: flex-start;
@@ -556,7 +551,7 @@ a { color: inherit; text-decoration: none; }
   gap: 9px;
   height: var(--badge-h);
   margin: 0 0 var(--badge-gap);
-  color: var(--paper);
+  color: var(--ivory);
   font-size: clamp(13px, 1.3vw, 15px);
   font-weight: 600;
   line-height: 1;
@@ -565,7 +560,7 @@ a { color: inherit; text-decoration: none; }
 .review-stars {
   display: inline-flex;
   gap: 2px;
-  color: #ffdc41;
+  color: var(--gold);
   font-size: 1.12em;
   line-height: 1;
 }
@@ -586,14 +581,14 @@ a { color: inherit; text-decoration: none; }
 
 .line-mask { display: block; padding-bottom: 0.04em; }
 .line { display: block; }
-.dot { color: var(--red-light); }
+.dot { color: var(--gold); }
 
 /* Held to 42ch so the supporting line stops inside the heavy part of the hero
    scrim rather than running out into the band where the photograph opens up. */
 .hero__deck {
   margin-top: clamp(22px, 2.8vw, 32px);
   max-width: 42ch;
-  color: var(--mist);
+  color: var(--silver);
   font-size: clamp(16px, 1.45vw, 18.5px);
   line-height: 1.72;
 }
@@ -623,7 +618,7 @@ a { color: inherit; text-decoration: none; }
 /* A shade lighter than --mist: this strip runs the full width of the copy
    column, out to where the scrim has already started to release. */
 .hero__facts dt {
-  color: #C4C9D0;
+  color: var(--silver);
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -666,7 +661,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: clamp(26px, 3vw, 46px);
-  color: var(--mist);
+  color: var(--silver);
   font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -678,7 +673,7 @@ a { color: inherit; text-decoration: none; }
   flex: none;
   width: 5px;
   height: 5px;
-  background: var(--red);
+  background: var(--gold);
   transform: rotate(45deg);
 }
 
@@ -712,7 +707,7 @@ a { color: inherit; text-decoration: none; }
    Everything that carries text sits left of about 48 percent of the viewport:
    the supporting line stops near 37, and the facts strip, the widest element
    in the column, ends around 46. The band holds 0.80 or more across all of
-   that and only then drops away, through the gap before the white card and
+   that and only then drops away, through the gap before the request card and
    out to the margin beyond it, which is where the photograph is actually
    allowed to read.
 
@@ -730,16 +725,16 @@ a { color: inherit; text-decoration: none; }
   pointer-events: none;
   background:
     linear-gradient(103deg,
-      rgba(20, 22, 26, 0.90) 0%,
-      rgba(20, 22, 26, 0.80) 48%,
-      rgba(20, 22, 26, 0.44) 60%,
-      rgba(20, 22, 26, 0.18) 74%,
-      rgba(20, 22, 26, 0.04) 100%),
+      rgba(12, 12, 13, 0.90) 0%,
+      rgba(12, 12, 13, 0.80) 48%,
+      rgba(12, 12, 13, 0.44) 60%,
+      rgba(12, 12, 13, 0.18) 74%,
+      rgba(12, 12, 13, 0.04) 100%),
     linear-gradient(to bottom,
-      rgba(20, 22, 26, 0.80) 0%,
-      rgba(20, 22, 26, 0) 20%,
-      rgba(20, 22, 26, 0) 60%,
-      rgba(20, 22, 26, 0.88) 100%);
+      rgba(12, 12, 13, 0.80) 0%,
+      rgba(12, 12, 13, 0) 20%,
+      rgba(12, 12, 13, 0) 60%,
+      rgba(12, 12, 13, 0.88) 100%);
 }
 
 /* ===========================================================  Services  == */
@@ -755,15 +750,15 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--paper);
-  border: 1px solid var(--line);
+  background: var(--graphite);
+  border: 1px solid var(--rule);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 .service:hover {
   transform: translateY(-4px);
-  box-shadow: 0 1px 2px rgba(20, 22, 26, 0.06), 0 22px 44px -22px rgba(20, 22, 26, 0.3);
+  box-shadow: 0 1px 2px rgba(12, 12, 13, 0.06), 0 22px 44px -22px rgba(12, 12, 13, 0.3);
 }
 
 .service__figure { position: relative; margin: 0; overflow: hidden; }
@@ -785,8 +780,8 @@ a { color: inherit; text-decoration: none; }
   min-width: 46px;
   height: 34px;
   padding-inline: 12px;
-  background: var(--red);
-  color: #fff;
+  background: var(--gold);
+  color: var(--obsidian);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -808,7 +803,7 @@ a { color: inherit; text-decoration: none; }
 
 .service__text {
   margin-top: 12px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 15.5px;
   line-height: 1.7;
 }
@@ -816,7 +811,7 @@ a { color: inherit; text-decoration: none; }
 .service__list {
   margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule);
 }
 .service__list li {
   position: relative;
@@ -824,7 +819,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
   font-weight: 500;
   line-height: 1.5;
-  color: var(--ink);
+  color: var(--ivory);
 }
 .service__list li + li { margin-top: 11px; }
 .service__list li::before {
@@ -834,17 +829,216 @@ a { color: inherit; text-decoration: none; }
   left: 0;
   width: 6px;
   height: 6px;
-  background: var(--red);
+  background: var(--gold);
   transform: rotate(45deg);
 }
 
 .services__foot {
   margin-top: clamp(32px, 4vw, 48px);
-  color: var(--stone);
+  color: var(--silver);
   font-size: 15.5px;
 }
 
 /* ===========================================================  Projects  == */
+
+/* ==============================================================  Drawer  == */
+
+/* A side drawer, above everything. The nav sits at 100 and the skip link at
+   200, so this takes 300 to clear both: a drawer that opens underneath the
+   sticky header is the usual way this goes wrong.
+
+   Driven by an .is-open class rather than by display, so the panel can
+   actually slide, and so the open state still lands correctly if the
+   transition never gets a frame to run in. */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  visibility: hidden;
+  transition: visibility 0s linear 0.42s;
+}
+.drawer.is-open {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 11, 13, 0.58);
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.34s var(--ease);
+}
+.drawer.is-open .drawer__scrim { opacity: 1; }
+
+/* The panel scrolls itself rather than the page behind it. overscroll-behavior
+   stops a flick at the end of the panel from chaining through to the document
+   underneath, which is what makes a drawer feel detached on a phone. */
+.drawer__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: clamp(360px, 34vw, 540px);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--graphite);
+  color: var(--ivory);
+  box-shadow: -30px 0 70px -32px rgba(0, 0, 0, 0.55);
+  transform: translateX(100%);
+  transition: transform 0.42s var(--ease);
+}
+.drawer.is-open .drawer__panel { transform: translateX(0); }
+
+.drawer[data-drawer-side="left"] .drawer__panel {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+  box-shadow: 30px 0 70px -32px rgba(0, 0, 0, 0.55);
+}
+.drawer[data-drawer-side="left"].is-open .drawer__panel { transform: translateX(0); }
+
+/* Sits over the photograph, so it carries its own scrim to stay legible
+   whatever the image behind it happens to be. */
+.drawer__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(12, 12, 13, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  color: var(--ivory);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease);
+}
+.drawer__close:hover { background: rgba(12, 12, 13, 0.8); }
+.drawer__close svg { width: 19px; height: 19px; }
+
+.drawer__media { position: relative; margin: 0; flex: none; background: var(--graphite); }
+.drawer__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.drawer__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 4.5vw, 34px);
+}
+
+.drawer__eyebrow {
+  color: var(--gold);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.drawer__eyebrow:empty { display: none; }
+
+.drawer__title {
+  margin-top: 10px;
+  font-size: clamp(24px, 3.4vw, 31px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.drawer__text {
+  margin-top: 16px;
+  color: var(--silver);
+  font-size: 15.5px;
+  line-height: 1.72;
+}
+.drawer__text:empty { display: none; }
+
+.drawer__facts {
+  margin-top: clamp(22px, 3vw, 30px);
+  border-top: 1px solid var(--rule);
+}
+.drawer__facts:empty { display: none; border-top: 0; }
+.drawer__facts > div {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.drawer__facts dt {
+  color: var(--silver);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.85;
+}
+.drawer__facts dd { margin: 0; font-size: 15.5px; }
+
+.drawer__scope { margin-top: clamp(22px, 3vw, 30px); }
+.drawer__scope-label {
+  color: var(--silver);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.drawer__scope ul { margin-top: 14px; }
+.drawer__scope li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.drawer__scope li + li { margin-top: 10px; }
+.drawer__scope li::before {
+  content: "";
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* Pushed to the bottom of the panel when the content above is short, so the
+   action does not float in the middle of an empty drawer. */
+.drawer__actions {
+  margin-top: auto;
+  padding-top: clamp(26px, 4vw, 36px);
+}
+
+/* Full bleed on a phone, as asked. The 360px floor above would otherwise
+   leave a sliver of page showing at 375px. */
+@media (max-width: 640px) {
+  .drawer__panel { width: 100%; }
+  .drawer__facts > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .drawer__facts dt { line-height: 1.6; }
+}
+
+/* Locking the page behind the drawer removes the scrollbar, which widens the
+   viewport and shifts the whole layout left. --scrollbar-w is measured in JS
+   before the lock and given back as padding, so nothing moves. */
+html.drawer-open { overflow: hidden; }
+html.drawer-open body { padding-right: var(--scrollbar-w, 0px); }
 
 .projects__head {
   display: flex;
@@ -855,16 +1049,69 @@ a { color: inherit; text-decoration: none; }
 }
 .projects__head .section__head { max-width: 640px; }
 
-.projects__grid {
+/* --------------------------------------------------- Projects marquee -- */
+
+/* Three lanes of a vertical marquee. The wall is a fixed height window and the
+   lanes run inside it, so the section does not grow as projects are added to
+   data/projects.json: a longer list makes the loop longer, not the page.
+
+   Top and bottom are masked so cards fade in and out of the window rather than
+   being cut off by a hard edge. */
+.projects__wall {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--lanes, 3), minmax(0, 1fr));
   gap: clamp(18px, 2vw, 26px);
   margin-top: clamp(44px, 5.5vw, 68px);
+  height: clamp(460px, 66vh, 700px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 89%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 89%, transparent 100%);
 }
 
-/* The first tile spans two columns and two rows, so the grid opens on the
-   strongest photograph instead of six equal squares. */
-.project--wide { grid-column: span 2; grid-row: span 2; }
+/* The Magic UI marquee, as plain CSS. A lane holds two or more identical
+   groups; each group translates up by exactly its own height plus one gap, so
+   at the end of a cycle the next group is sitting precisely where the previous
+   one started and the seam is invisible. Anything other than `-100% - gap`
+   here will visibly jump. */
+.marquee {
+  --gap: clamp(18px, 2vw, 26px);
+  --duration: 48s;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.marquee__group {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: var(--gap);
+  animation: marquee-vertical var(--duration) linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+/* Alternating lanes run the other way, so the wall does not read as one block
+   sliding past. */
+.marquee--reverse .marquee__group { animation-direction: reverse; }
+
+/* Hovering anywhere in the wall stops every lane, so a card can actually be
+   looked at, and clicked, rather than escaping under the cursor. */
+.projects__wall:hover .marquee__group { animation-play-state: paused; }
+
+.projects__fallback {
+  grid-column: 1 / -1;
+  align-self: center;
+  color: var(--silver);
+  font-size: 15.5px;
+  text-align: center;
+}
 
 .project {
   position: relative;
@@ -872,7 +1119,8 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   margin: 0;
   border-radius: var(--radius);
-  background: var(--sand);
+  background: var(--graphite);
+  cursor: pointer;
 }
 .project img {
   width: 100%;
@@ -881,7 +1129,6 @@ a { color: inherit; text-decoration: none; }
   object-fit: cover;
   transition: transform 0.7s var(--ease);
 }
-.project--wide img { aspect-ratio: 8 / 7; }
 .project:hover img { transform: scale(1.045); }
 
 .project figcaption {
@@ -889,10 +1136,10 @@ a { color: inherit; text-decoration: none; }
   inset: auto 0 0 0;
   padding: clamp(40px, 6vw, 60px) clamp(18px, 2vw, 26px) clamp(16px, 1.8vw, 22px);
   background: linear-gradient(to top,
-    rgba(20, 22, 26, 0.92) 0%,
-    rgba(20, 22, 26, 0.74) 42%,
-    rgba(20, 22, 26, 0) 100%);
-  color: var(--paper);
+    rgba(12, 12, 13, 0.92) 0%,
+    rgba(12, 12, 13, 0.74) 42%,
+    rgba(12, 12, 13, 0) 100%);
+  color: var(--ivory);
 }
 
 .project__name {
@@ -901,11 +1148,10 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.012em;
   line-height: 1.3;
 }
-.project--wide .project__name { font-size: clamp(20px, 2.2vw, 26px); }
 
 .project__meta {
   margin-top: 7px;
-  color: var(--red-light);
+  color: var(--gold);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -916,7 +1162,7 @@ a { color: inherit; text-decoration: none; }
 .projects__note {
   margin-top: clamp(28px, 3.4vw, 40px);
   max-width: 70ch;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 13.5px;
   line-height: 1.6;
 }
@@ -940,14 +1186,14 @@ a { color: inherit; text-decoration: none; }
 }
 .story__figure figcaption {
   margin-top: 14px;
-  color: var(--stone);
+  color: var(--ink-muted);
   font-size: 13px;
   line-height: 1.6;
 }
 
 .story__copy p {
   max-width: 58ch;
-  color: var(--stone);
+  color: var(--ink-muted);
   font-size: 16.5px;
   line-height: 1.75;
 }
@@ -966,7 +1212,7 @@ a { color: inherit; text-decoration: none; }
   gap: clamp(16px, 2vw, 24px);
   margin-top: clamp(32px, 3.6vw, 44px);
   padding-top: clamp(26px, 3vw, 34px);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule-dark);
 }
 .stats > div { min-width: 0; }
 .stats dt {
@@ -974,11 +1220,11 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: var(--red);
+  color: var(--bronze);
 }
 .stats dd {
   margin: 10px 0 0;
-  color: var(--stone);
+  color: var(--ink-muted);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
@@ -988,17 +1234,17 @@ a { color: inherit; text-decoration: none; }
 
 .points {
   margin-top: clamp(30px, 3.4vw, 40px);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule-dark);
 }
 .points li {
   display: grid;
   grid-template-columns: 124px minmax(0, 1fr);
   gap: 20px;
   padding: 18px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--rule-dark);
 }
 .points li span {
-  color: var(--red);
+  color: var(--bronze);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1020,17 +1266,17 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   padding: clamp(24px, 2.8vw, 34px);
-  background: var(--bone);
-  border: 1px solid var(--line);
+  background: var(--graphite);
+  border: 1px solid var(--rule);
   border-radius: var(--radius);
 }
 
-.quote__stars { display: inline-flex; gap: 3px; color: var(--red); margin-bottom: 18px; }
+.quote__stars { display: inline-flex; gap: 3px; color: var(--gold); margin-bottom: 18px; }
 .quote__stars svg { display: block; fill: currentColor; }
 
 .quote__body {
   flex: 1;
-  color: var(--ink);
+  color: var(--ivory);
   font-size: clamp(15.5px, 1.5vw, 17px);
   line-height: 1.7;
   text-wrap: pretty;
@@ -1040,8 +1286,8 @@ a { color: inherit; text-decoration: none; }
   display: block;
   margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid var(--line);
-  color: var(--stone);
+  border-top: 1px solid var(--rule);
+  color: var(--silver);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.13em;
@@ -1062,8 +1308,8 @@ a { color: inherit; text-decoration: none; }
 .faq__head { position: sticky; top: calc(var(--nav-h) + 40px); }
 .faq__cta { margin-top: 32px; }
 
-.faq__list { border-top: 1px solid var(--line); }
-.faq__item { border-bottom: 1px solid var(--line); }
+.faq__list { border-top: 1px solid var(--rule); }
+.faq__item { border-bottom: 1px solid var(--rule); }
 
 .faq__q { margin: 0; font-size: inherit; font-weight: inherit; }
 
@@ -1081,7 +1327,7 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   transition: color 0.22s var(--ease);
 }
-.faq__trigger:hover { color: var(--red); }
+.faq__trigger:hover { color: var(--gold); }
 
 .faq__label {
   font-size: clamp(16.5px, 1.6vw, 19px);
@@ -1105,7 +1351,7 @@ a { color: inherit; text-decoration: none; }
   width: 14px;
   height: 1.5px;
   margin-top: -0.75px;
-  background: var(--red);
+  background: var(--gold);
   transition: transform 0.32s var(--ease);
 }
 .faq__icon::after { transform: rotate(90deg); }
@@ -1131,7 +1377,7 @@ a { color: inherit; text-decoration: none; }
 .faq__answer p {
   max-width: 62ch;
   padding-bottom: 26px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 15.5px;
   line-height: 1.75;
 }
@@ -1159,7 +1405,7 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--rule);
 }
 .details dt {
-  color: var(--mist);
+  color: var(--silver);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1178,7 +1424,7 @@ a { color: inherit; text-decoration: none; }
   padding: 7px 13px;
   border: 1px solid var(--rule-strong);
   border-radius: 999px;
-  color: var(--mist);
+  color: var(--silver);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -1188,12 +1434,13 @@ a { color: inherit; text-decoration: none; }
 
 /* ==============================================================  Cards  == */
 
-/* One white card style, used for the hero request panel and the contact form.
-   It floats over the hero photograph and sits on the ink band at the foot. */
+/* One graphite card style, used for the hero request panel and the contact
+   form. It floats over the hero photograph and sits on the obsidian band at
+   the foot of the page. */
 .card {
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--line);
+  background: var(--graphite);
+  color: var(--ivory);
+  border: 1px solid var(--rule);
   border-radius: 10px;
   box-shadow: var(--shadow-float);
   padding: clamp(22px, 2.4vw, 32px);
@@ -1220,7 +1467,7 @@ a { color: inherit; text-decoration: none; }
 
 .form__note {
   margin-top: 8px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -1228,10 +1475,10 @@ a { color: inherit; text-decoration: none; }
 .form__alert {
   margin-bottom: 20px;
   padding: 13px 15px;
-  border: 1px solid rgba(179, 52, 28, 0.35);
+  border: 1px solid rgba(224, 121, 107, 0.45);
   border-left: 3px solid var(--alert);
   border-radius: var(--radius-sm);
-  background: rgba(179, 52, 28, 0.06);
+  background: rgba(224, 121, 107, 0.07);
   color: var(--alert);
   font-size: 14px;
   line-height: 1.55;
@@ -1245,7 +1492,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  color: var(--ink);
+  color: var(--ivory);
 }
 
 .field input,
@@ -1255,10 +1502,10 @@ a { color: inherit; text-decoration: none; }
   width: 100%;
   min-height: 48px;
   padding: 13px 14px;
-  background: var(--bone);
-  border: 1px solid var(--line-strong);
+  background: var(--well);
+  border: 1px solid var(--rule-strong);
   border-radius: var(--radius-sm);
-  color: var(--ink);
+  color: var(--ivory);
   font-family: inherit;
   font-size: 15.5px;
   line-height: 1.5;
@@ -1268,15 +1515,13 @@ a { color: inherit; text-decoration: none; }
 
 /* Light enough to read as a hint, dark enough to clear AA on the bone well. */
 .field input::placeholder,
-.field textarea::placeholder { color: #767B83; }
+.field textarea::placeholder { color: #86847F; }
 
 .field input:hover,
 .field textarea:hover,
-.select select:hover { border-color: var(--ink); }
+.select select:hover { border-color: rgba(244, 241, 233, 0.32); }
 
-.field input:focus,
-.field textarea:focus,
-.select select:focus { background: var(--paper); }
+
 
 .field input[aria-invalid="true"],
 .field textarea[aria-invalid="true"],
@@ -1287,7 +1532,7 @@ a { color: inherit; text-decoration: none; }
   appearance: none;
   -webkit-appearance: none;
   padding-right: 42px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%235A5F68' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' stroke='%23AAA8A2' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 15px center;
   cursor: pointer;
@@ -1295,7 +1540,7 @@ a { color: inherit; text-decoration: none; }
 
 .field__hint {
   margin-top: 7px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -1312,7 +1557,7 @@ a { color: inherit; text-decoration: none; }
 
 .form__foot {
   margin-top: 14px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 12.5px;
   line-height: 1.55;
   text-align: center;
@@ -1329,23 +1574,23 @@ a { color: inherit; text-decoration: none; }
 }
 .sent__body {
   margin-top: 12px;
-  color: var(--stone);
+  color: var(--silver);
   font-size: 15px;
   line-height: 1.7;
 }
 .sent__recap {
   margin: 26px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--rule);
 }
 .sent__recap > div {
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
   gap: 16px;
   padding: 13px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--rule);
 }
 .sent__recap dt {
-  color: var(--stone);
+  color: var(--silver);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1357,8 +1602,8 @@ a { color: inherit; text-decoration: none; }
 /* =============================================================  Footer  == */
 
 .footer {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--obsidian);
+  color: var(--ivory);
   border-top: 1px solid var(--rule);
   padding-top: clamp(40px, 5vw, 64px);
   padding-bottom: clamp(32px, 4vw, 48px);
@@ -1374,11 +1619,11 @@ a { color: inherit; text-decoration: none; }
 
 .footer__links { display: flex; flex-wrap: wrap; gap: 12px 30px; }
 .footer__links a {
-  color: var(--mist);
+  color: var(--silver);
   font-size: 14.5px;
   transition: color 0.2s var(--ease);
 }
-.footer__links a:hover { color: var(--paper); }
+.footer__links a:hover { color: var(--ivory); }
 
 .footer__base {
   display: flex;
@@ -1391,7 +1636,7 @@ a { color: inherit; text-decoration: none; }
 }
 .footer__base p {
   max-width: 78ch;
-  color: var(--mist);
+  color: var(--silver);
   font-size: 12.5px;
   line-height: 1.6;
 }
@@ -1461,14 +1706,14 @@ a { color: inherit; text-decoration: none; }
     font-size: clamp(38px, 10.5vw, 60px);
   }
 
-  /* Red band running from the top of the hero to the midpoint of the headline.
+  /* Gold band running from the top of the hero to the midpoint of the headline.
      Its height is the space above the title plus exactly one line box, so the
      edge lands between the first and second lines at any type scale, and stays
      correct even where a line has to wrap. The 1.09em is the 1.05 line height
      plus the 0.04em the mask adds below it. */
   /* The band is anchored to the title, so it has to reach back up over the
      review badge as well as the hero padding, or it starts below the badge and
-     leaves a strip of ink between the nav and the red. Both offsets carry the
+     leaves a strip of obsidian between the nav and the gold. Both offsets carry the
      same badge block, so the top edge lands exactly on the top of the hero. */
   .hero__title::before {
     content: "";
@@ -1479,23 +1724,25 @@ a { color: inherit; text-decoration: none; }
     width: 100vw;
     height: calc(var(--hero-pad-top) + var(--badge-h) + var(--badge-gap) + 1.09em);
     transform: translateX(-50%);
-    background: var(--red);
+    background: var(--gold);
   }
 
-  /* Centred with the copy it sits above, and on the red rather than the photo,
-     so the label takes the same white as the first headline line. */
+  /* Centred with the copy it sits above, and on the gold rather than the
+     photo, so the label flips to obsidian like the headline line beside it.
+     Ivory on gold is 2.0:1; obsidian on gold is 8.4:1. */
   .review-badge {
     align-self: center;
-    color: #fff;
+    color: var(--obsidian);
   }
+  .review-stars { color: var(--obsidian); }
 
-  /* First line sits on the red. White holds 5.4:1 there. */
-  .hero__title .line-mask:first-child .line { color: #fff; }
-  .hero__title .line-mask:first-child .dot { color: #fff; }
+  /* First line sits on the gold. Obsidian holds 8.4:1 there. */
+  .hero__title .line-mask:first-child .line { color: var(--obsidian); }
+  .hero__title .line-mask:first-child .dot { color: var(--obsidian); }
 
   .hero__deck { max-width: none; margin-inline: auto; }
 
-  /* The picture carries straight on from the red band as the hero background,
+  /* The picture carries straight on from the gold band as the hero background,
      so there is no dark gap between the two. The band sits a layer above it
      and the copy runs over the top of both. */
   .hero__media { z-index: -2; }
@@ -1505,15 +1752,19 @@ a { color: inherit; text-decoration: none; }
      It holds through the text and releases toward the foot of the hero. */
   .hero__media::after {
     background: linear-gradient(to bottom,
-      rgba(20, 22, 26, 0.84) 0%,
-      rgba(20, 22, 26, 0.84) 44%,
-      rgba(20, 22, 26, 0.56) 66%,
-      rgba(20, 22, 26, 0.3) 100%);
+      rgba(12, 12, 13, 0.84) 0%,
+      rgba(12, 12, 13, 0.84) 44%,
+      rgba(12, 12, 13, 0.56) 66%,
+      rgba(12, 12, 13, 0.3) 100%);
   }
 
-  .projects__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .project--wide { grid-column: span 2; grid-row: auto; }
-  .project--wide img { aspect-ratio: 16 / 9; }
+  /* Two lanes. renderProjects() redistributes the projects across whatever
+     this leaves, so nothing is hidden, and the lane count in the JSON is
+     matched by --lanes here. */
+  .projects__wall {
+    --lanes: 2;
+    height: clamp(420px, 60vh, 620px);
+  }
 
   .quotes { grid-template-columns: minmax(0, 1fr); }
 
@@ -1538,10 +1789,10 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 560px) {
   body { font-size: 16px; }
 
-  .projects__grid { grid-template-columns: minmax(0, 1fr); }
-  .project--wide { grid-column: auto; }
-  .project--wide img,
-  .project img { aspect-ratio: 4 / 3; }
+  .projects__wall {
+    --lanes: 1;
+    height: clamp(400px, 56vh, 520px);
+  }
 
   .points li,
   .details > div,
@@ -1590,6 +1841,27 @@ a { color: inherit; text-decoration: none; }
   }
   .faq__answer { transition: none !important; }
   .hero__marquee-track { animation: none !important; }
+
+  /* The blanket 0.001ms rule above would snap the lanes to the end of their
+     cycle rather than stopping them, so the wall drops the marquee entirely
+     and lays the real cards out as a plain grid. The duplicate groups are the
+     ones carrying aria-hidden, so hiding those leaves exactly one of each
+     project on screen. */
+  .projects__wall {
+    height: auto;
+    overflow: visible;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+  .marquee { overflow: visible; }
+  .marquee__group { animation: none !important; }
+  .marquee__group[aria-hidden="true"] { display: none; }
+
+  /* The blanket rule above shortens durations but leaves transition-delay
+     alone, so the drawer would stay visible for 0.42s after closing. */
+  .drawer { transition-delay: 0s !important; }
+  .drawer__scrim,
+  .drawer__panel { transition: none !important; }
 
   .nav__overlay,
   .nav__overlay-links a,

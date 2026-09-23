@@ -96,18 +96,12 @@
         }
       };
     });
-    Alpine.data('project', function () {
-      return {
-        open: false,
-        current: '',
-        toggle: function (event) {
-          console.log(event)
-          this.current = event.offsetParent.getAttribute('data-project-id') || '';
-            this.open = !this.open;
-          console.log('toggle', this.open, this.current);
-        }
-      }
-    });
+   
+    /* Project selection lives in createDrawer() and initProjects() rather than
+       in an Alpine component: the project records are held by the renderer
+       that reads data/projects.json, and an Alpine component would only have
+       the id string and would need a store plumbed back to that data. */
+
     /* ------------------------------------------------- Project forms ---- */
 
     Alpine.data('projectForm', function (prefix) {
@@ -371,6 +365,383 @@
     }
   }
 
+  /* ========================================  Projects marquee  == */
+
+  /* The wall is built from data/projects.json so a new project is one object in
+     that file and nothing else. Two things are worth knowing before editing:
+
+     - Lanes are filled round robin, so adding one project lengthens one lane
+       rather than reshuffling the wall.
+     - Each lane repeats its cards until it comfortably overflows the window.
+       A vertical marquee only loops seamlessly while the groups are taller
+       than the frame they run in, and with six projects across three lanes a
+       single pass would leave a gap at the bottom of the cycle. */
+
+  var MIN_CARDS_PER_LANE = 6;
+
+  /* ==============================================================  Drawer  == */
+
+  /* A side drawer. Generic on purpose: it knows how to open, close, trap focus
+     and lock the page, and takes whatever content it is handed. The projects
+     wall is its only caller today.
+
+       drawer.open({ eyebrow, title, text, image: {src, srcset, sizes, alt},
+                     facts: [[label, value], ...], scope: [string, ...] },
+                   triggerElement)
+
+     The trigger is remembered so focus can go back to the exact card that
+     opened it, which is the difference between a drawer that is usable from
+     the keyboard and one that dumps you at the top of the document. */
+  function createDrawer() {
+    var root = document.querySelector('[data-drawer]');
+    if (!root) return null;
+
+    var panel = root.querySelector('[data-drawer-panel]');
+    var image = root.querySelector('[data-drawer-image]');
+    var media = root.querySelector('.drawer__media');
+    var eyebrow = root.querySelector('[data-drawer-eyebrow]');
+    var title = root.querySelector('[data-drawer-title]');
+    var text = root.querySelector('[data-drawer-text]');
+    var facts = root.querySelector('[data-drawer-facts]');
+    var scope = root.querySelector('[data-drawer-scope]');
+    var scopeList = root.querySelector('[data-drawer-scope-list]');
+
+    var open = false;
+    var trigger = null;
+
+    function lock(on) {
+      var html = document.documentElement;
+      if (on) {
+        /* Measured before the lock: afterwards the scrollbar is gone and the
+           difference reads as zero. */
+        var gap = window.innerWidth - html.clientWidth;
+        html.style.setProperty('--scrollbar-w', gap + 'px');
+        html.classList.add('drawer-open');
+      } else {
+        html.classList.remove('drawer-open');
+        html.style.removeProperty('--scrollbar-w');
+      }
+    }
+
+    function focusable() {
+      return Array.prototype.filter.call(
+        panel.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+        function (el) { return el.offsetParent !== null || el === panel; }
+      );
+    }
+
+    function fill(content) {
+      var picture = content.image || {};
+
+      if (picture.src) {
+        image.setAttribute('src', picture.src);
+        if (picture.srcset) image.setAttribute('srcset', picture.srcset);
+        else image.removeAttribute('srcset');
+        if (picture.sizes) image.setAttribute('sizes', picture.sizes);
+        image.setAttribute('alt', picture.alt || '');
+        media.hidden = false;
+      } else {
+        media.hidden = true;
+      }
+
+      eyebrow.textContent = content.eyebrow || '';
+      title.textContent = content.title || '';
+      text.textContent = content.text || '';
+
+      facts.innerHTML = (content.facts || [])
+        .filter(function (row) { return row && row[1]; })
+        .map(function (row) {
+          return '<div><dt>' + escapeHtml(row[0]) + '</dt><dd>' + escapeHtml(row[1]) + '</dd></div>';
+        }).join('');
+
+      var items = content.scope || [];
+      scope.hidden = !items.length;
+      scopeList.innerHTML = items.map(function (item) {
+        return '<li>' + escapeHtml(item) + '</li>';
+      }).join('');
+    }
+
+    function show(content, from) {
+      fill(content);
+      trigger = from || null;
+      open = true;
+      lock(true);
+      root.classList.add('is-open');
+      /* The panel keeps the previous project's scroll position otherwise. */
+      panel.scrollTop = 0;
+      window.setTimeout(function () { panel.focus(); }, 0);
+    }
+
+    function hide() {
+      if (!open) return;
+      open = false;
+      root.classList.remove('is-open');
+      lock(false);
+      if (trigger && document.contains(trigger)) trigger.focus();
+      trigger = null;
+    }
+
+    root.addEventListener('click', function (event) {
+      if (event.target.closest('[data-drawer-dismiss]')) hide();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (!open) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        hide();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      var items = focusable();
+      if (!items.length) {
+        event.preventDefault();
+        panel.focus();
+        return;
+      }
+
+      var first = items[0];
+      var last = items[items.length - 1];
+      var active = document.activeElement;
+
+      if (event.shiftKey && (active === first || active === panel)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    /* The action inside the drawer points at the contact form, so the drawer
+       has to get out of the way before the page scrolls to it. */
+    var cta = root.querySelector('[data-drawer-cta]');
+    if (cta) cta.addEventListener('click', function () { hide(); });
+
+    return { open: show, close: hide, isOpen: function () { return open; } };
+  }
+
+  function loadProjectData() {
+    /* An inline <script type="application/json" id="projects-data"> wins if it
+       is present. That lets the whole page be served as one file, and makes it
+       work from file:// where fetch cannot read a sibling. */
+    var inline = document.getElementById('projects-data');
+    if (inline) {
+      try {
+        return Promise.resolve(JSON.parse(inline.textContent));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+    return window.fetch('data/projects.json', { cache: 'no-cache' }).then(function (response) {
+      if (!response.ok) throw new Error('projects.json responded ' + response.status);
+      return response.json();
+    });
+  }
+
+  /* Builds src and srcset for one project. A full URL is taken as given; a
+     path goes through the Next.js optimiser while `optimizer` is on, and is
+     simply joined to imageBase once the photographs are hosted locally. */
+  function buildImage(project, data) {
+    var path = project.image || '';
+    if (/^https?:/i.test(path)) return { src: path, srcset: '' };
+
+    var base = data.imageBase || '';
+
+    if (!data.optimizer) return { src: base + path, srcset: '' };
+
+    var widths = data.widths && data.widths.length ? data.widths : [640, 828, 1200];
+    var url = function (width) {
+      return base + '/_next/image?url=' + encodeURIComponent(path) + '&w=' + width + '&q=75';
+    };
+
+    return {
+      src: url(widths[Math.min(1, widths.length - 1)]),
+      srcset: widths.map(function (width) { return url(width) + ' ' + width + 'w'; }).join(', ')
+    };
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  /* `duplicate` cards are inside an aria-hidden group, so they carry an empty
+     alt and no role or tabindex: a screen reader hears each project once, and
+     Tab does not walk through six copies of the same wall. They keep the id,
+     because clicking a repeat is still clicking that project and it would be
+     strange for half the visible cards to do nothing. */
+  function cardMarkup(project, data, duplicate, sizes) {
+    var image = buildImage(project, data);
+    var meta = [project.category, project.location].filter(Boolean).join(', ');
+
+    return '<figure class="project" data-project-id="' + escapeHtml(project.id) + '"' +
+      (duplicate
+        ? ''
+        : ' role="button" tabindex="0" aria-label="' + escapeHtml(project.name + ', open details') + '"') +
+      '>' +
+      '<img src="' + escapeHtml(image.src) + '"' +
+      (image.srcset ? ' srcset="' + escapeHtml(image.srcset) + '"' : '') +
+      ' sizes="' + escapeHtml(sizes) + '" width="1200" height="900" loading="lazy" decoding="async"' +
+      ' alt="' + (duplicate ? '' : escapeHtml(project.alt)) + '">' +
+      '<figcaption>' +
+      '<p class="project__name">' + escapeHtml(project.name) + '</p>' +
+      (meta ? '<p class="project__meta">' + escapeHtml(meta) + '</p>' : '') +
+      '</figcaption>' +
+      '</figure>';
+  }
+
+  function laneCountFor(data) {
+    var marquee = data.marquee || {};
+    if (window.matchMedia('(max-width: 559px)').matches) return marquee.lanesPhone || 1;
+    if (window.matchMedia('(max-width: 899px)').matches) return marquee.lanesTablet || 2;
+    return marquee.lanes || 3;
+  }
+
+  function renderProjects(wall, data) {
+    var projects = (data.projects || []).filter(function (p) { return p && p.name; });
+    if (!projects.length) throw new Error('projects.json contained no projects');
+
+    var marquee = data.marquee || {};
+    var lanes = Math.max(1, Math.min(laneCountFor(data), projects.length));
+    var durations = marquee.durations || [];
+    var reverse = marquee.reverse || [];
+
+    /* Matches the --lanes the stylesheet is using at this width, so the
+       columns the CSS draws and the columns filled here cannot disagree. */
+    wall.style.setProperty('--lanes', lanes);
+
+    var sizes = lanes === 1 ? '92vw' : lanes === 2 ? '46vw' : '31vw';
+    var html = '';
+
+    for (var lane = 0; lane < lanes; lane++) {
+      var items = projects.filter(function (_, index) { return index % lanes === lane; });
+      var groups = Math.max(2, Math.ceil(MIN_CARDS_PER_LANE / items.length));
+
+      var cards = function (duplicate) {
+        return items.map(function (project) {
+          return cardMarkup(project, data, duplicate, sizes);
+        }).join('');
+      };
+
+      var groupsHtml = '';
+      for (var group = 0; group < groups; group++) {
+        groupsHtml += '<div class="marquee__group"' +
+          (group === 0 ? '' : ' aria-hidden="true"') + '>' +
+          cards(group !== 0) +
+          '</div>';
+      }
+
+      html += '<div class="marquee"' + (reverse[lane] ? ' marquee--reverse' : '') + '"' +
+        ' style="--duration:' + escapeHtml(durations[lane] || '48s') + '">' +
+        groupsHtml +
+        '</div>';
+    }
+
+    wall.innerHTML = html;
+    return lanes;
+  }
+
+  function initProjects() {
+    var wall = document.querySelector('[data-projects-wall]');
+    if (!wall) return;
+
+    var fallback = wall.querySelector('[data-projects-fallback]');
+
+    var fail = function (error) {
+      wall.innerHTML = '';
+      if (fallback) {
+        fallback.hidden = false;
+        wall.appendChild(fallback);
+      }
+      if (window.console) window.console.error('Projects failed to load:', error);
+    };
+
+    if (typeof window.fetch !== 'function' && !document.getElementById('projects-data')) {
+      fail(new Error('fetch is unavailable and no inline projects data was found'));
+      return;
+    }
+
+    loadProjectData().then(function (data) {
+      var lanes = renderProjects(wall, data);
+
+      /* ---------------------------------------- Cards open the drawer --- */
+
+      var drawer = createDrawer();
+
+      if (drawer) {
+        var byId = {};
+        (data.projects || []).forEach(function (project) { byId[project.id] = project; });
+
+        var openFor = function (card) {
+          var project = byId[card.getAttribute('data-project-id')];
+          if (!project) return;
+
+          var picture = buildImage(project, data);
+
+          drawer.open({
+            eyebrow: project.category || '',
+            title: project.name || '',
+            /* summary is the written story; alt describes the photograph and
+               is the honest fallback while a project has no summary yet. */
+            text: project.summary || project.alt || '',
+            image: {
+              src: picture.src,
+              srcset: picture.srcset,
+              sizes: '(max-width: 640px) 100vw, 540px',
+              alt: project.alt || ''
+            },
+            facts: [
+              ['Type', project.category],
+              ['Location', project.location],
+              ['Completed', project.year]
+            ],
+            scope: project.scope || []
+          }, card);
+        };
+
+        /* Delegated, so it survives the innerHTML swap on every re-render. */
+        wall.addEventListener('click', function (event) {
+          var card = event.target.closest('.project');
+          if (card) openFor(card);
+        });
+
+        /* The cards are figures with role="button", so Enter and Space have to
+           be wired by hand; a real button would get them for free but would
+           fight the card styling. Space is also the page scroll key, so the
+           default is suppressed only when a card actually has focus. */
+        wall.addEventListener('keydown', function (event) {
+          if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+          var card = event.target.closest('.project[role="button"]');
+          if (!card) return;
+          event.preventDefault();
+          openFor(card);
+        });
+      }
+
+      /* Re-render on a breakpoint change rather than hiding lanes in CSS,
+         which would drop whichever projects happened to land in them. */
+      var onResize = function () {
+        var next = laneCountFor(data);
+        if (next === lanes) return;
+        lanes = renderProjects(wall, data);
+      };
+
+      ['(max-width: 559px)', '(max-width: 899px)'].forEach(function (query) {
+        var mql = window.matchMedia(query);
+        if (mql.addEventListener) {
+          mql.addEventListener('change', onResize);
+        } else if (mql.addListener) {
+          mql.addListener(onResize);
+        }
+      });
+    }).catch(fail);
+  }
+
   function initReveals() {
     if (typeof window.ScrollTrigger === 'undefined') return;
 
@@ -503,6 +874,7 @@
       });
     }
 
+    initProjects();
     initNavState();
     initScrollSpy();
     initEstimateLinks();

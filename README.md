@@ -2,9 +2,9 @@
 
 A single page site for Red Bridge Construction LLC, a general contractor in Kintnersville, PA.
 
-It reuses the structure and motion of the Caleb Electric demo in `../ElectricalSite`, rebuilt
-around Red Bridge's brand red and weighted much lighter: that site is dark end to end, this one
-runs dark only in the header, the hero and the closing contact band.
+It shares its structure, motion, palette and typography with the Caleb Electric demo in
+`../ElectricalSite`, rebuilt around Red Bridge's content. Dark throughout with gold accents and a
+single ivory band, the same shape as that site.
 
 ## Running it
 
@@ -22,7 +22,8 @@ Then open http://localhost:8091.
 |---|---|
 | `index.html` | Full page markup, plus `GeneralContractor` JSON-LD |
 | `css/styles.css` | Palette tokens, layout, responsive rules |
-| `js/main.js` | Alpine components, GSAP hero entrance, scroll spy, nav helpers |
+| `js/main.js` | Alpine components, GSAP hero entrance, projects marquee, scroll spy, nav helpers |
+| `data/projects.json` | The projects wall. **This is where you add a project.** |
 
 Libraries load from CDN: Manrope (Google Fonts), GSAP 3.12.5 with ScrollTrigger, Alpine.js 3.14.1.
 
@@ -38,42 +39,64 @@ further down.
 
 ## Palette
 
+Taken wholesale from the Caleb Electric site in `../ElectricalSite`, tokens and all.
+
 | Token | Hex | Role |
 |---|---|---|
-| `--ink` | `#14161A` | Header, hero, contact band, footer |
-| `--slate` | `#1E2126` | Elevated dark surfaces |
-| `--red` | `#C2371F` | Buttons, eyebrows, accents |
-| `--red-light` | `#E4705A` | Accent text and focus rings on dark |
-| `--paper` | `#FFFFFF` | Default page ground, cards |
-| `--bone` | `#F7F5F2` | Alternating section ground, input wells |
-| `--sand` | `#EFEAE3` | Image mats behind loading photographs |
-| `--stone` | `#5A5F68` | Supporting text on light |
-| `--mist` | `#A8ADB5` | Supporting text on dark |
+| `--obsidian` | `#0C0C0D` | The default page ground: nav, hero, most sections, footer |
+| `--graphite` | `#1B1C1E` | Elevated dark surfaces: service cards, quotes, form cards, drawer |
+| `--gold` | `#C6A66B` | Buttons, eyebrows, stars, accents, focus rings on dark |
+| `--ivory` | `#F4F1E9` | Main text on dark, and the one light section |
+| `--silver` | `#AAA8A2` | Supporting text on dark |
+| `--bronze` | `#765A2E` | Accent text, links and focus rings **on ivory** |
+| `--well` | `#131416` | Input wells inside graphite panels |
+| `--ink` | `#17171A` | Body text on ivory |
+| `--ink-muted` | `#55555A` | Supporting text on ivory |
 
-`--red` is sampled from the existing site, which sets it as `#c2371f`. The typography is not
-carried over: that site pairs Archivo with IBM Plex Mono, this one stays on Manrope to match the
-Caleb Electric theme it is adapted from.
+Two tokens are additions, because this site has surfaces the electrical site does not:
+`--rule-dark-strong` (a second hairline weight for the ivory band) and the two shadow tokens,
+re-weighted for a dark ground.
 
-Every text pair was measured against its actual background. `--stone` on white is 6.4:1 and on
-`--bone` 5.9:1. `--red` on white is 5.4:1, and white on `--red` is the same 5.4:1, so the primary
-button passes AA. `--red` against `--ink` is only 3.3:1, which is why dark surfaces switch to
-`--red-light` at 5.8:1 for anything that carries meaning, including focus rings.
+### The one rule that drives everything
+
+**Gold is 8.4:1 on obsidian and 2.1:1 on ivory.** It cannot carry text or small accents on a light
+ground. That single fact is why:
+
+- the page is dark by default and `.section--light` is the exception, not the other way round;
+- everything on the ivory band uses `--bronze` (5.7:1) instead of gold: the eyebrow, the stats
+  figures, the `.points` labels, links and the focus ring;
+- gold buttons take `--obsidian` text, never white. White on gold is 2.3:1;
+- on mobile, the review badge, the stars and the first headline line all flip to obsidian where
+  they sit on the gold band.
+
+Verified by walking every rendered text node on the page and comparing each colour against the
+background actually behind it: **218 text nodes, zero below AA.** The tightest pair is bronze on
+ivory at 5.69:1. The five grounds in use are obsidian, graphite, `--well`, ivory and gold.
+
+## Typography
+
+Unchanged, because it was already identical. Both sites load
+`Manrope:wght@400;500;600;700` from Google Fonts and share the same body metrics
+(16.5px / 1.68) and the same type scale, including `.section__title` at
+`clamp(29px, 4.1vw, 46px)`. Red Bridge was built on the electrical site's type system from the
+start.
 
 ## Section rhythm
 
-Dark, then light for most of the page, then dark again to close:
+Dark throughout, with one ivory band to break the run — the same shape as the electrical site,
+where the workmanship section is the only light one:
 
-hero → services (`--bone`) → projects (white) → about (`--bone`) → testimonials (white) →
-FAQ (`--bone`) → contact (`--ink`) → footer (`--ink`)
+hero → services → projects → **about (`--section--light`, ivory)** → testimonials → FAQ →
+contact → footer
 
-Two dark blocks out of eight, bookending the page. That is the "more white" part of the brief.
+`.section--light` is the only ground modifier. Everything else inherits obsidian from `body`.
 
 ## The one card style
 
-Both request forms are the same white card. On the hero it floats over the photograph on
-`--shadow-float`, at the foot of the page it sits on the ink band. Having one light form style
-rather than a dark one and a light one is why the hero reads white at the top right, and it means
-the field, label, error and select styles are written once.
+Both request forms are the same graphite card with `--well` inputs. On the hero it floats over the
+photograph on `--shadow-float`; at the foot of the page it sits on the obsidian band. The project
+drawer uses the same surface. One card style rather than a light one and a dark one means the
+field, label, error and select styles are written once.
 
 The hero copy runs a tighter vertical rhythm than the contact card so the whole hero, marquee
 included, still fits a 900px tall window. Control sizes are untouched, only the spacing.
@@ -85,7 +108,7 @@ The photograph runs full bleed behind the hero, so its legibility scrim is not g
 Everything carrying text sits left of about 48 percent of the viewport: the supporting line stops
 near 37 percent, and the facts strip, then the widest element in the column, ended around 46. The band
 holds 0.80 cover or more across all of that and only then drops away, through the gap before the
-white card and out to the margin beyond it, which is where the picture is actually allowed to
+request card and out to the margin beyond it, which is where the picture is actually allowed to
 read. Measured against a blown out highlight, the worst case any stop can produce is 5.7:1 for
 the supporting line and 6.0:1 for the facts labels.
 
@@ -93,7 +116,7 @@ Two things follow from that and are easy to undo by accident:
 
 - `.hero__deck` is capped at 42ch, not the 52ch it would otherwise want. That is what keeps the
   supporting line inside the heavy part of the band.
-- `.hero__facts dt` is `#C4C9D0` rather than `--mist`, because that strip ran the full width of
+- `.hero__facts dt` is `--silver` rather than the body tone, because that strip ran the full width of
   the copy column, out to where the scrim has already started to release. The facts strip has
   since been taken out of the markup, so this is dormant. Its CSS is still in place, and the
   colour still matters if it ever comes back.
@@ -117,11 +140,12 @@ Below 900px the hero stacks and centres, the marquee and the card are both dropp
 action carries people to the form at the foot of the page. Holding the copy, a second action and a
 four field form in one column is what made the original congested.
 
-A red band runs from the top of the hero down to the midpoint of the headline, so the first line
-sits on red and the second on the picture. Its height is the space above the title plus exactly one
-line box, which puts the edge between the two lines at any type scale and holds even at 320px where
-a line has to wrap. Measured at 375px the band edge and the first line box bottom land on the same
-pixel. The first line is white on the red, at 5.4:1.
+A gold band runs from the top of the hero down to the midpoint of the headline, so the first line
+sits on gold and the second on the picture. Its height is the space above the title plus exactly
+one line box, which puts the edge between the two lines at any type scale and holds even at 320px
+where a line has to wrap. Measured at 375px the band edge and the first line box bottom land on
+the same pixel. The first line, the review badge and the stars all flip to `--obsidian` on the
+gold, at 8.4:1 — ivory there would be 2.0:1.
 
 If you change the headline's line height, change the band with it: the `1.09em` is that 1.05 line
 height plus the 0.04em the mask adds below it. The band sits at `z-index: -1` and the picture at
@@ -142,11 +166,151 @@ cannot be measured by the band. Measured 320px to 899px, the band top sits on th
 pixel and the band bottom on the first line box bottom to the pixel, including at 320px where the
 second line wraps.
 
-## The marquee
+## The projects wall
 
-Decorative repetition of the services listed further down the page, so the whole strip is
-`aria-hidden` rather than read out twice. Two identical groups shifted by half the track give a
-seamless loop, and the animation is switched off under `prefers-reduced-motion`.
+Three lanes of a vertical marquee, built from `data/projects.json`. **To add a project, append one
+object to `projects` in that file and reload. Nothing in the HTML, CSS or JS needs to change.**
+
+```json
+{
+  "id": "kitchen-doylestown",
+  "name": "Kitchen Remodel",
+  "category": "Kitchen",
+  "location": "Doylestown",
+  "image": "/portfolio/kitchen.jpg",
+  "alt": "What is actually in the frame.",
+
+  "summary": "A paragraph for the drawer. Optional, falls back to alt.",
+  "year": "2024",
+  "scope": ["Optional list", "Shown in the drawer"]
+}
+```
+
+The last three are drawer only and each one is dropped if absent.
+
+**The shipped `summary` lines only describe what is visible in each
+photograph** — they make no claim about scope, duration, materials or budget,
+because I have no way to know those. Replace them with the real story of each
+job before this goes live.
+
+Projects are dealt into lanes round robin, so a new one lengthens a single lane rather than
+reshuffling the wall. Lane count follows the width: three above 900px, two down to 560px, one
+below that. It re-renders on a breakpoint change rather than hiding lanes in CSS, because hiding a
+lane would silently drop whichever projects had landed in it. Tested at 375, 700, 1000 and 1440px
+with six and with seven projects: every project appears exactly once at every width.
+
+`marquee` in the same file sets the lane count per breakpoint, and the per lane `durations` and
+`reverse` flags. Alternating the direction is what stops the wall reading as one block sliding
+past.
+
+### How the loop stays seamless
+
+This is Magic UI's marquee as plain CSS. Each lane holds two or more identical groups, and a group
+translates up by **exactly its own height plus one gap**:
+
+```css
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-100% - var(--gap))); }
+}
+```
+
+At the end of a cycle the next group is sitting precisely where the previous one started, so the
+seam is invisible. Any other value there will visibly jump, and the `--gap` term is easy to lose
+when editing.
+
+The other half of the invariant is that the groups have to stay taller than the window they run
+in, or a bare strip appears at the bottom of each cycle. With six projects across three lanes a
+single pass would do exactly that, so each lane repeats its cards until it holds at least
+`MIN_CARDS_PER_LANE` (6, in `js/main.js`). That count is derived per lane, so it self-corrects as
+projects are added: at seven projects the fuller lane drops to two repeats while the shorter ones
+stay at three.
+
+The wall is a fixed height window, so a longer list makes the loop longer rather than making the
+page taller. Top and bottom are masked so cards fade rather than being cut off, and hovering
+anywhere in the wall pauses every lane so a card can be read and clicked instead of escaping under
+the cursor.
+
+### The detail drawer
+
+Clicking a card opens a drawer from the right edge, full screen width below
+640px. It lives at the end of `<body>`, not inside `#projects`: a `position:
+fixed` overlay nested in a content section is at the mercy of any ancestor that
+clips or creates a stacking context. It sits at `z-index: 300`, above the nav at
+100 and the skip link at 200.
+
+`createDrawer()` in `js/main.js` is generic — it knows how to open, close, trap
+focus and lock the page, and takes whatever content it is handed:
+
+```js
+drawer.open({ eyebrow, title, text, image: {src, srcset, sizes, alt},
+              facts: [[label, value], ...], scope: [string, ...] },
+            triggerElement);
+```
+
+Empty `facts` rows and an empty `scope` are dropped rather than rendered blank,
+so `year` and `scope` can be filled in per project without the drawer looking
+broken for the ones that have neither. `data-drawer-side="left"` on the root
+element brings it in from the other edge instead.
+
+What it handles:
+
+- **Escape, the scrim and the close button** all dismiss it.
+- **Focus** moves into the panel on open, is trapped while open (Tab wraps both
+  ways), and returns to the exact card that opened it. The cards are figures
+  with `role="button"` and `tabindex="0"`, so Enter and Space are wired by hand;
+  Space suppresses page scroll only while a card actually has focus.
+- **The page is locked** behind it. The lock removes the scrollbar, which widens
+  the viewport and shifts the layout, so the scrollbar width is measured *before*
+  locking and given back as `padding-right` on the body. Measured: 15px on this
+  machine, zero visible shift.
+- **The panel scrolls itself**, with `overscroll-behavior: contain` so a flick at
+  the end of it does not chain through to the document underneath.
+- **The CTA closes the drawer first**, then lets the page scroll to the contact
+  form, rather than scrolling behind a drawer that is still open.
+- **Reduced motion** gets an explicit `transition-delay: 0s`. The blanket rule in
+  that media query shortens durations but leaves delays alone, so the drawer
+  would otherwise stay visible for 0.42s after closing.
+
+The repeated cards in the marquee keep their `data-project-id` and open the
+drawer too — it would be odd for half the visible cards to do nothing — but they
+carry no `role` or `tabindex`, so Tab does not walk through six copies of the
+same wall.
+
+**Where this replaced work in progress:** the `projectSelection` Alpine
+component and the `.projects__modal` placeholder are gone. The drawer is plain
+JS because the project records live in the renderer that reads
+`projects.json`; an Alpine component would only have the id string and would
+need a store plumbed back to that data.
+
+### Accessibility and fallbacks
+
+Only the first group in each lane is real. The repeats carry `aria-hidden="true"` and empty `alt`,
+so each project is announced once, and only the real cards get the Alpine click binding.
+
+Under `prefers-reduced-motion: reduce` the wall drops the marquee entirely and lays the real cards
+out as a plain grid. That is deliberate rather than inherited: the blanket `animation-duration:
+0.001ms` rule in that media query would otherwise snap each lane to the *end* of its cycle instead
+of stopping it.
+
+If `projects.json` cannot be loaded, the section keeps its heading and shows a short message with
+the phone number rather than collapsing to an empty band.
+
+**One tradeoff worth knowing:** the project names and locations are no longer in the HTML source,
+they are fetched and rendered. Google executes JavaScript so this is usually fine, but those
+strings are local SEO keywords ("Kitchen Remodel", "New Hope", "Doylestown"). If you would rather
+have them in the source, paste the JSON into `index.html` as
+`<script type="application/json" id="projects-data">…</script>`; the loader checks for that first
+and only falls back to fetching the file, so no code changes are needed. That also makes the page
+work from `file://`, where `fetch` cannot read a sibling file.
+
+## The hero marquee
+
+Not the same thing as the projects wall above. This is the horizontal strip of service names along
+the bottom edge of the hero: decorative repetition of the services listed further down the page,
+so the whole strip is `aria-hidden` rather than read out twice. Two identical groups shifted by
+half the track give a seamless loop, and the animation is switched off under
+`prefers-reduced-motion`.
 
 ## Navigation
 
@@ -191,10 +355,17 @@ is what serves the resized WebP behind each `srcset`:
 https://www.redbridgeconstructionllc.com/_next/image?url=%2Fportfolio%2F<name>&w=<width>&q=75
 ```
 
-That works today and keeps the page fast, but it ties this site to the old one staying up. Before
-launch, copy the six originals into `assets/portfolio/`, resize them, and swap the `src` and
-`srcset` values. The originals are large: `bathroom_remodel.png` is 7.0MB and `bob_house.jpg` is
-4.0MB, so they need resizing rather than dropping in as they are.
+That works today and keeps the page fast, but it ties this site to the old one staying up. The
+originals are large: `bathroom_remodel.png` is 7.0MB and `bob_house.jpg` is 4.0MB, so they need
+resizing rather than dropping in as they are.
+
+Before launch, copy them into `assets/portfolio/`, resize, and then:
+
+- **Projects wall:** in `data/projects.json`, set `"optimizer": false`, `"imageBase": ""`, and
+  point each `image` at its local path. The renderer stops building optimiser URLs and uses the
+  paths directly. A full `http(s)` URL in `image` is always used as-is.
+- **Everywhere else** (hero, service cards, the About figure) is still hand written markup, so
+  swap those `src` and `srcset` values in `index.html`.
 
 Six photographs are in use:
 
@@ -238,13 +409,12 @@ want a single string revealed character by character, the portable way is a fixe
 The cluster is `aria-hidden`; the rating is announced by the text beside it.
 
 It sits above the headline as a kicker: left aligned with the copy column on desktop, centred on
-mobile, where it falls inside the red band. See the band maths under **Hero layout** before moving
+mobile, where it falls inside the gold band. See the band maths under **Hero layout** before moving
 it, and see **Motion** if it is ever removed.
 
-The stars are gold, `#FFDC41`. Against the red band that is 4.0:1, under the 4.5:1 AA threshold,
-which is survivable only because the cluster is decorative and `aria-hidden` and the rating is
-carried by the white label beside it at 5.4:1. The testimonial stars further down the page are
-`--red`, so two different star colours currently appear on the page; worth settling on one.
+The stars are `--gold`, the same token as the testimonial stars further down the page, so the two
+now match. On the dark ground that is 8.4:1; on the mobile gold band they flip to `--obsidian`
+along with the label beside them.
 
 ## Three things to confirm
 
