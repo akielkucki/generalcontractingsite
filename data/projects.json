@@ -1,0 +1,109 @@
+{
+  "_readme": [
+    "This file drives the Projects marquee and the detail drawer. Add a project by",
+    "appending an object to the list below and reloading. Nothing else changes.",
+    "",
+    "Required:",
+    "  id        a short slug, unique on the page. Used as data-project-id.",
+    "  name      the title shown on the card and at the top of the drawer.",
+    "  category  the first half of the small label, e.g. Kitchen.",
+    "  location  the second half, e.g. New Hope.",
+    "  image     path to the photograph, see imageBase below.",
+    "  alt       what is actually in the frame, for screen readers.",
+    "",
+    "Optional, drawer only. Any of these that are missing are simply left out:",
+    "  summary   a paragraph about the project. The ones shipped here only",
+    "            describe what is visible in the photograph; replace them with the",
+    "            real story of the job. Falls back to alt when absent.",
+    "  year      e.g. \"2024\". Shown as a Completed row.",
+    "  scope     a list of strings, e.g. [\"Full gut\", \"Custom cabinetry\"].",
+    "            Shown as a bulleted Scope of work list. Empty by default.",
+    "",
+    "Images: the photographs are hosted locally in assets/portfolio/, pre-sized",
+    "as name-<width>.webp for every entry in widths. With optimizer false, an",
+    "image of \"assets/portfolio/name.webp\" expands to that srcset; any other",
+    "local path is used as-is with no srcset. Full size originals are kept in",
+    "assets/portfolio/originals/. Setting optimizer to true (with imageBase set",
+    "to a Next.js site) builds optimiser URLs instead. A full http(s) URL in",
+    "image is always used as-is."
+  ],
+  "imageBase": "",
+  "optimizer": false,
+  "widths": [
+    640,
+    828,
+    1200
+  ],
+  "marquee": {
+    "lanes": 3,
+    "lanesTablet": 2,
+    "lanesPhone": 1,
+    "durations": [
+      "52s",
+      "44s",
+      "60s"
+    ],
+    "reverse": [
+      false,
+      true,
+      false
+    ]
+  },
+  "projects": [
+    {
+      "id": "primary-bath-remodel",
+      "name": "Primary Bath Remodel",
+      "category": "Bathroom",
+      "location": "New Hope",
+      "image": "assets/portfolio/bathroom_remodel.webp",
+      "alt": "A remodeled bathroom with a floating dark wood double vanity, stone countertop, two backlit mirrors and lighting under the cabinet.",
+      "summary": "A floating dark wood vanity with a stone top, twin backlit mirrors, and lighting run underneath the cabinet so the whole unit reads as though it is hovering off the wall."
+    },
+    {
+      "id": "walk-in-shower",
+      "name": "Walk-In Shower and Tile",
+      "category": "Bathroom",
+      "location": "New Hope",
+      "image": "assets/portfolio/bathroom_remodel_2.webp",
+      "alt": "A walk-in shower with a patterned mosaic feature wall, large format tile, a glass enclosure, a built in bench and a rainfall head.",
+      "summary": "A patterned mosaic feature wall set behind large format tile, with a frameless glass enclosure, a built in bench and a rainfall head."
+    },
+    {
+      "id": "kitchen-remodel",
+      "name": "Kitchen Remodel",
+      "category": "Kitchen",
+      "location": "New Hope",
+      "image": "assets/portfolio/kitchen_remodel.webp",
+      "alt": "A remodeled galley kitchen with light shaker cabinets, stainless appliances, wide plank flooring and a window at the far end.",
+      "summary": "Light shaker cabinetry and stainless appliances down a galley plan, with wide plank flooring and the window at the far end left as the room's main source of light."
+    },
+    {
+      "id": "detached-garage",
+      "name": "Detached Garage",
+      "category": "Outdoor",
+      "location": "Kintnersville",
+      "image": "assets/portfolio/shed_remodel.webp",
+      "alt": "A finished detached garage at dusk, with a cupola on the ridge and warm light coming through the windows and door.",
+      "summary": "A detached garage finished with a cupola on the ridge, photographed at dusk with the windows and door lit from inside."
+    },
+    {
+      "id": "new-construction-build",
+      "name": "New Construction Build",
+      "category": "Residential",
+      "location": "New Hope",
+      "image": "assets/portfolio/bob_house.webp",
+      "alt": "A new two storey structure going up on concrete piers, framed and partly sheathed, with the existing house alongside it.",
+      "summary": "A two storey structure raised on concrete piers, framed and partly sheathed, going up alongside the existing house.",
+      "featured": true
+    },
+    {
+      "id": "exterior-renovation",
+      "name": "Exterior Renovation",
+      "category": "Exterior",
+      "location": "Doylestown",
+      "image": "assets/portfolio/client_project.webp",
+      "alt": "A two storey home part way through an exterior renovation, wrapped in housewrap with its gables and dormers rebuilt.",
+      "summary": "A two storey home part way through an exterior renovation, wrapped in housewrap with its gables and dormers rebuilt."
+    }
+  ]
+}
